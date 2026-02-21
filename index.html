@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POCKit — Startup Toolkit | KU Startup Hackathon</title>
-  <meta name="description" content="ชุดเครื่องมือสอน POC สำหรับ KU Startup Engineering Hackathon — Design Thinking, POC vs MVP, AI Tools, Workshop">
+  <meta name="description"
+    content="ชุดเครื่องมือสอน POC สำหรับ KU Startup Engineering Hackathon — Design Thinking, POC vs MVP, AI Tools, Workshop">
   <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
   <main class="main">
     <!-- Hero -->
@@ -21,7 +24,8 @@
         ที่พกไปได้เหมือนอยู่ใน Pocket 🚀
       </p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <a href="/slides.html" class="btn btn--primary btn--large">🎞️ เปิดสไลด์</a>
+        <a href="/slides.html" class="btn btn--primary btn--large">🎞️ เปิดสไลด์ (Presentation)</a>
+        <a href="/slides-full.html" class="btn btn--secondary btn--large">📄 สไลด์ (เนื้อหาเต็ม)</a>
         <a href="/playbook.html" class="btn btn--secondary btn--large">📖 อ่าน Playbook</a>
       </div>
     </section>
@@ -219,7 +223,7 @@
           gain.gain.value = 0.3;
           osc.start();
           setTimeout(() => { osc.stop(); ctx.close(); }, 500);
-        } catch(e) {}
+        } catch (e) { }
         return;
       }
       timerSeconds--;
@@ -227,7 +231,7 @@
       display.style.color = timerSeconds <= 30 ? '#ef4444' : '#f0b90b';
     }
 
-    window.startSectionTimer = function(minutes) {
+    window.startSectionTimer = function (minutes) {
       clearInterval(timerInterval);
       timerSeconds = minutes * 60;
       display.textContent = formatTime(timerSeconds);
@@ -267,4 +271,5 @@
     });
   </script>
 </body>
+
 </html>
