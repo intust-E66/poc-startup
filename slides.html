@@ -9,644 +9,534 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;900&display=swap');
+
         :root {
             --r-background-color: #0a0e1a;
             --r-main-font: 'Noto Sans Thai', sans-serif;
             --r-heading-font: 'Noto Sans Thai', sans-serif;
             --r-main-color: #e2e8f0;
             --r-heading-color: #f0b90b;
-            --r-link-color: #f0b90b;
             --gold: #f0b90b;
             --green: #10b981;
             --red: #ef4444;
+            --blue: #3b82f6;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;900&display=swap');
-
-        .reveal {
-            font-family: 'Noto Sans Thai', sans-serif;
+        .reveal * {
+            font-family: 'Noto Sans Thai', sans-serif !important;
         }
 
-        .reveal h1,
-        .reveal h2,
-        .reveal h3 {
-            font-family: 'Noto Sans Thai', sans-serif;
-        }
-
-        .reveal .slides section {
-            text-align: left;
+        .reveal h1 {
+            font-size: 3.5em;
+            text-transform: none;
+            text-shadow: 0 0 30px rgba(240, 185, 11, 0.3);
+            font-weight: 900;
         }
 
         .reveal h2 {
             color: var(--gold);
-            font-size: 1.8em;
-            font-weight: 900;
-            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-transform: none;
+            line-height: 1.3;
+            font-weight: 800;
         }
 
         .reveal h3 {
-            color: var(--gold);
-            font-size: 1.3em;
+            font-size: 1.6em;
+            color: var(--r-main-color);
+            margin-bottom: 20px;
             font-weight: 700;
-        }
-
-        .reveal ul,
-        .reveal ol {
-            font-size: 0.75em;
-            line-height: 1.6;
-        }
-
-        .reveal li {
-            margin-bottom: 8px;
         }
 
         .reveal p {
-            font-size: 0.8em;
+            font-size: 1.1em;
             line-height: 1.6;
         }
 
-        .part-badge {
-            display: inline-block;
-            padding: 6px 20px;
-            background: linear-gradient(135deg, #f0b90b, #d4a00a);
-            color: #0a0e1a;
-            font-weight: 900;
-            font-size: 0.7em;
-            border-radius: 20px;
-            margin-bottom: 12px;
-        }
-
-        .case-badge {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-        }
-
-        .bad {
-            color: #ef4444;
-        }
-
-        .good {
-            color: #10b981;
-        }
-
-        .gold {
-            color: #f0b90b;
-        }
-
         .highlight {
-            color: #f0b90b;
-            font-weight: 700;
+            color: var(--gold);
+            font-weight: 800;
         }
 
-        table {
-            font-size: 0.7em;
-            width: 100%;
-            border-collapse: collapse;
-            margin: 12px 0;
+        .highlight-red {
+            color: var(--red);
+            font-weight: 800;
         }
 
-        th,
-        td {
-            padding: 8px 12px;
+        .highlight-green {
+            color: var(--green);
+            font-weight: 800;
+        }
+
+        .highlight-blue {
+            color: var(--blue);
+            font-weight: 800;
+        }
+
+        .emoji-big {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+        }
+
+        .emoji-med {
+            font-size: 1.8em;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+        }
+
+        .box-gold {
+            border-color: rgba(240, 185, 11, 0.5);
+            background: rgba(240, 185, 11, 0.08);
+            box-shadow: 0 10px 30px rgba(240, 185, 11, 0.1);
+        }
+
+        .box-red {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.08);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.1);
+        }
+
+        .box-green {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: stretch;
             text-align: left;
         }
 
-        th {
-            background: rgba(240, 185, 11, 0.15);
-            color: var(--gold);
-            font-weight: 700;
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
         }
 
-        .reveal blockquote {
-            background: rgba(240, 185, 11, 0.08);
-            border-left: 4px solid var(--gold);
-            padding: 16px 20px;
-            font-style: italic;
-            font-size: 0.85em;
-            width: 90%;
+        .nav-links {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .btn-link {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 8px 20px;
-            background: var(--gold);
-            color: #0a0e1a;
-            border-radius: 8px;
+        .nav-links a {
+            color: white;
             text-decoration: none;
+            font-size: 14px;
             font-weight: 700;
-            font-size: 0.7em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn-link:hover {
-            opacity: 0.9;
+        .nav-links a:hover {
+            color: var(--gold);
         }
 
-        .step-box {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.85em;
-            margin-right: 4px;
+        .footer-logo {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            opacity: 0.5;
+            z-index: 999;
         }
 
-        .step-1 {
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
+        .footer-logo span {
+            color: var(--gold);
         }
 
-        .step-2 {
-            background: rgba(234, 179, 8, 0.2);
-            color: #facc15;
+        .quote {
+            font-style: italic;
+            font-size: 1.6em;
+            line-height: 1.4;
+            border-left: 8px solid var(--gold);
+            padding-left: 40px;
+            text-align: left;
+            margin: 40px 0;
         }
 
-        .step-3 {
-            background: rgba(249, 115, 22, 0.2);
-            color: #fb923c;
+        .author {
+            font-size: 0.6em;
+            color: var(--gold);
+            font-style: normal;
+            display: block;
+            margin-top: 20px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        .step-4 {
-            background: rgba(16, 185, 129, 0.2);
-            color: #34d399;
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 26, 0.85);
+            z-index: -1;
         }
     </style>
 </head>
 
 <body>
+    <div class="nav-links"><a href="/index.html">🏠 กลับหน้า Home</a></div>
+    <div class="footer-logo">POCK<span>it</span></div>
+
     <div class="reveal">
         <div class="slides">
 
-            <!-- ========== TITLE ========== -->
-            <section data-background-gradient="linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 100%)">
-                <div style="text-align:center;">
-                    <h1 style="font-size:3em;font-weight:900;color:var(--gold);margin-bottom:0;">POC Mindset</h1>
-                    <p style="font-size:1em;color:var(--r-main-color);margin-top:8px;">KU Startup Engineering Hackathon
-                        2026</p>
-                    <p style="font-size:0.7em;color:rgba(255,255,255,0.5);margin-top:24px;">by อ.อินทัธ — Intust</p>
-                </div>
+            <!-- ====== TITLE ====== -->
+            <section class="center" data-transition="zoom">
+                <h1 style="margin-bottom:0; font-size: 5em;">POCK<span style="color:var(--gold)">it</span></h1>
+                <h3
+                    style="letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,0.5);font-size:1em;margin-top:0;">
+                    Startup Toolkit</h3>
+                <div style="height:60px;"></div>
+                <h2 style="font-size: 2.5em; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">The POC Mindset</h2>
+                <p style="font-size: 1.2em; color: #a0aec0;">KU Startup Engineering Hackathon 2026</p>
+                <div class="fragment fade-up" style="margin-top: 40px; font-size: 0.8em; color: #718096;">ใช้ปุ่มลูกศร ◀
+                    ▶ เพื่อเปลี่ยนสไลด์</div>
             </section>
 
-            <!-- ========== PART 1: THE MINDSET ========== -->
+            <!-- ====== PART 1: THE TRAP ====== -->
             <section>
-                <div style="text-align:center;">
-                    <span class="part-badge">PART 1</span>
-                    <h2 style="margin-top:16px;">The Mindset<br>"Don't Assume, Ask"</h2>
-                    <p style="font-size:0.8em;color:rgba(255,255,255,0.6);">12:00 - 13:00</p>
-                    <p>Objective: ทำลายความมั่นใจผิดๆ (Ego) ของน้องๆ ว่า "ไอเดียข้าเจ๋ง" ให้กลับมามองความจริง<br>
-                        และเข้าใจว่า <strong class="highlight">"การเขียนโค้ดคือสิ่งสุดท้ายที่ควรทำ"</strong></p>
-                </div>
-            </section>
-
-            <!-- 🎯 The Opening: 30-Second Test -->
-            <section>
-                <h2>🎯 The Opening: 30-Second Test</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">10 นาที</p>
-                <ul>
-                    <li><strong>Concept:</strong> กฎเหล็กของการสื่อสาร Value Proposition</li>
-                    <li><strong>Activity:</strong> สุ่ม 2-3 ทีม ให้ลุกขึ้นพูดไอเดียตัวเอง</li>
-                    <li><strong>The Rule:</strong> "ถ้าใครก็ตามเห็น Prototype หรือฟังไอเดียของคุณแล้ว <span
-                            class="bad">ไม่เข้าใจใน 30 วินาที</span> ว่ามันแก้ปัญหาอะไร → ถือว่ายังไม่ผ่าน"</li>
-                    <li><strong>Key Message:</strong> MVP ที่ดี<span class="highlight">ไม่ได้วัดที่ความซับซ้อน
-                            แต่วัดที่ความชัดเจนของ Problem</span> ถ้า Problem ยังงง Prototype จะออกมางงแน่นอน</li>
-                </ul>
-                <a href="/30sec-test.html" class="btn-link" target="_blank">🎯 เปิดหน้า 30-Second Test</a>
-            </section>
-
-            <!-- 1.1 Design Thinking & The Pivot -->
-            <section>
-                <h2>1.1 Design Thinking & The Pivot</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">20 นาที</p>
-                <ul>
-                    <li><strong>Visual Aid:</strong> โชว์ภาพ Design Thinking Process (<span
-                            class="step-1 step-box">Empathize</span> → <span class="step-2 step-box">Define</span> →
-                        <span class="step-3 step-box">Ideate</span> → <span class="step-4 step-box">Prototype</span> →
-                        <span class="step-1 step-box">Test</span>)</li>
-                    <li><strong>Context:</strong> เน้นย้ำว่าตอนนี้ทุกคนอยู่ Stage "Prototype/Test" แต่ <span
-                            class="highlight">ต้องกล้าวนลูปกลับไปที่จุดเริ่มต้นเสมอ</span></li>
-                </ul>
-            </section>
-
-            <!-- Case Study: Glurr -> Glurr Talk -->
-            <section>
-                <h2>🚨 Case Study: Glurr → Glurr Talk</h2>
-                <p style="font-size:0.9em;font-weight:700;color:var(--gold);">(The Pivot)</p>
-                <ul>
-                    <li><strong>Background:</strong> เริ่มจาก Glurr.com (เว็บบอร์ด Anonymous) ที่ประสบความสำเร็จ</li>
-                    <li><strong>The Trap:</strong> ต่อยอดทำ "Glurr Talk" (Platform จับคู่พี่มหาลัยสอนภาษาน้องมัธยม)
-                        โดยคิดไปเองว่า "พ่อแม่ต้องชอบ เพราะราคาถูกกว่าเรียนพิเศษ และได้ฝึก Conversation กับพี่ๆ"</li>
-                    <li><strong class="bad">The Failure:</strong> พิมพ์ใบปลิวไปแจกหน้าโรงเรียนกวดวิชา (ตึกวรรณสรณ์)
-                        ผลคือ <span class="bad">เงียบกริบ ไม่มีใครสนใจ</span></li>
-                    <li><strong class="good">The Truth:</strong> เมื่อเดินไปสัมภาษณ์ผู้ปกครอง พบ Insight ว่า <span
-                            class="highlight">"พ่อแม่จ่ายเงินเพื่อ 'คะแนนสอบ (Exam)' เพื่อให้ลูกสอบติด ไม่ได้จ่ายเพื่อ
-                            'ทักษะการพูด (Conversation)'"</span></li>
-                    <li><strong class="good">The Pivot:</strong> ตัดสินใจเปลี่ยนกลุ่มเป้าหมายทันที จาก "นักเรียน" ไปเป็น
-                        <span class="highlight">"คนวัยทำงาน"</span> ที่ต้องการอัปเงินเดือน/ย้ายงาน
-                        ซึ่งต้องการทักษะการพูดจริงๆ → ธุรกิจถึงไปรอด</li>
-                </ul>
-            </section>
-
-            <section>
-                <blockquote>
-                    <p style="font-size:1.2em;font-weight:700;">"ถ้าน้องไม่ลงไปคุยกับลูกค้า
-                        น้องจะสร้างของที่ไม่มีใครเอา<br>(Build what nobody wants)"</p>
-                </blockquote>
-                <a href="/cases.html" class="btn-link" target="_blank">📚 ดู Case Studies เพิ่มเติม</a>
-            </section>
-
-            <!-- 1.2 Workshop: Problem Statement -->
-            <section>
-                <h2>1.2 Workshop: Problem Statement</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">20 นาที</p>
-                <ul>
-                    <li><strong>Activity:</strong> ให้ทุกทีมเขียนประโยคเดียวลงกระดาษ:<br>
-                        <span class="highlight">"[User] มีปัญหา [Pain] เพราะ [Root Cause]"</span>
-                    </li>
-                    <li><strong>Evaluation Criteria (Roleplay):</strong> คุณเดินตรวจรายทีม
-                        <ul>
-                            <li class="bad">❌ Bad: "คนไทยมีปัญหาขยะล้นโลก" (กว้างไป, แก้ไม่ได้จริง)</li>
-                            <li class="good">✅ Good: "เด็กหอใน ม.เกษตร ขี้เกียจแยกขยะ
-                                เพราะถังขยะแยกประเภทอยู่ไกลจากตึกนอน 500 เมตร" (เจาะจง, เห็นภาพ, แก้ได้)</li>
-                        </ul>
-                    </li>
-                    <li><strong>Rule:</strong> <span class="bad">ถ้าเขียนไม่คม ห้ามทำ Prototype ต่อ</span></li>
-                </ul>
-                <a href="/workshop.html" class="btn-link" target="_blank">📝 เปิดหน้า Workshop Template A</a>
-            </section>
-
-            <!-- Root Cause — 5 Whys -->
-            <section>
-                <h2>Root Cause — 5 Whys</h2>
-                <p style="font-size:0.85em;">ถาม "ทำไม?" ซ้ำจนเจอรากสาเหตุจริง</p>
-                <table>
-                    <tr>
-                        <th>ชั้น</th>
-                        <th>คำถาม</th>
-                        <th>คำตอบ</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Why 1</strong></td>
-                        <td>ทำไมเด็กหอทิ้งขยะไม่แยก?</td>
-                        <td>ไม่มีถังแยก</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Why 2</strong></td>
-                        <td>ทำไมไม่มีถังแยก?</td>
-                        <td>หอไม่จัด</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Why 3</strong></td>
-                        <td>ทำไมหอไม่จัด?</td>
-                        <td>ไม่มีงบ/ไม่สน</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Why 4</strong></td>
-                        <td>ทำไมไม่มีงบ?</td>
-                        <td>มหาลัยไม่ allocate</td>
-                    </tr>
-                    <tr>
-                        <td class="highlight">Root Cause</td>
-                        <td colspan="2">ขยะรีไซเคิลไม่มีมูลค่าพอที่จะ justify ต้นทุนถัง → ต้องหา incentive อื่น</td>
-                    </tr>
-                </table>
-                <p style="font-size:0.75em;">ถ้า Root Cause ผิด → Prototype พัง เพราะแก้ปัญหาผิดจุด!</p>
-                <a href="/playbook.html" class="btn-link" target="_blank">📖 ดูตัวอย่าง 5 Whys ใน Playbook</a>
-            </section>
-
-            <!-- 1.3 Fail Fast, Succeed Faster -->
-            <section>
-                <h2>1.3 Fail Fast, Succeed Faster</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">15 นาที</p>
-                <div style="display:flex;gap:24px;margin-top:16px;">
-                    <div style="flex:1;">
-                        <h3 class="bad" style="font-size:0.9em;">❌ The Loop of Death</h3>
-                        <p style="font-size:0.7em;">(สิ่งที่ห้ามทำ)</p>
-                        <p style="font-size:0.75em;">Idea → Build App → Launch → <span class="bad">Fail</span><br>
-                            (เสียเงินและเวลาฟรี)</p>
+                <section class="center" data-background-color="#7f1d1d" data-transition="slide">
+                    <h2 style="color:white;font-size:3.5em;text-shadow: 0 10px 30px rgba(0,0,0,0.8);">💀
+                        คำหลอกลวงที่น่ากลัวที่สุด</h2>
+                </section>
+                <section class="center" data-transition="fade">
+                    <span class="emoji-big">💡</span>
+                    <h2 style="font-size: 3em; line-height: 1.3;">"ไอเดียนี้เจ๋งว่ะ<br><span
+                            class="highlight">คนต้องชอบแน่ๆ</span>"</h2>
+                </section>
+                <section class="center" data-background-color="#0f172a" data-transition="convex">
+                    <h2>รู้หรือไม่?</h2>
+                    <h1 class="highlight-red"
+                        style="font-size:6em;margin:20px 0; text-shadow: 0 0 50px rgba(239,68,68,0.4);">90%</h1>
+                    <h3 style="font-size: 2em;">ของ Startup <span class="highlight-red">ล้มเหลว 📉</span></h3>
+                </section>
+                <section class="center" data-transition="fade">
+                    <span class="emoji-big" style="font-size: 4em;">🗑️</span>
+                    <h2 style="font-size: 2.2em;">ไม่ใช่เพราะทำของไม่เสร็จ...</h2>
+                    <h2 class="fragment fade-up" style="font-size: 2.5em; margin-top: 20px;">แต่เพราะทำ <span
+                            class="highlight-red">"สิ่งที่ไม่มีใครต้องการ"</span></h2>
+                </section>
+                <section class="center" data-transition="zoom">
+                    <div class="quote" style="font-size: 2em; line-height: 1.3;">
+                        "Fall in love with the <span class="highlight-red">PROBLEM</span>,<br>not the solution."
+                        <span class="author">— Uri Levine (Co-founder of Waze)</span>
                     </div>
-                    <div style="flex:1;">
-                        <h3 class="good" style="font-size:0.9em;">✅ The Survival Loop</h3>
-                        <p style="font-size:0.7em;">(สิ่งที่ต้องทำ)</p>
-                        <ol style="font-size:0.7em;">
-                            <li><span class="step-box step-1">Talk</span> เล่าปากเปล่า (ถ้าเขาเมิน =
-                                จบ/เปลี่ยนไอเดียทันที)</li>
-                            <li><span class="step-box step-2">Sketch</span> วาดใส่กระดาษให้เห็นภาพ (ถ้าเขาไม่เก็ต =
-                                วาดใหม่)</li>
-                            <li><span class="step-box step-3">Lean Service</span> ทำระบบ "มือหมุน" ที่รับเงินได้จริง
-                                (ถ้าเขาไม่จ่าย = เลิกทำ)</li>
-                            <li><span class="step-box step-4">MVP</span> ค่อยสร้างของจริงเมื่อผ่านข้อ 3 แล้วเท่านั้น
-                            </li>
-                        </ol>
+                </section>
+            </section>
+
+            <!-- ====== PART 2: PROBLEM STATEMENT ====== -->
+            <section>
+                <section class="center" data-background-color="#1e3a8a" data-transition="slide">
+                    <h2 style="color:#60a5fa;font-size:3.5em;">🔍 Problem Statement</h2>
+                    <p style="font-size: 1.5em; color: white;">จุดเริ่มต้นของทุกสิ่งที่ถูกต้อง</p>
+                </section>
+                <section data-transition="fade">
+                    <h2 style="text-align: center; margin-bottom: 50px;">องค์ประกอบของปัญหาที่ชัดเจน</h2>
+                    <div class="grid-3">
+                        <div class="box fragment fade-up" data-fragment-index="1">
+                            <span class="emoji-big">🎯</span>
+                            <h3 class="highlight">1. ใคร?</h3>
+                            <p style="font-size:1em;color:var(--gold);font-weight:700;">Target User</p>
+                            <p style="font-size:1em;">คนกลุ่มไหนที่เจ็บปวดกับเรื่องนี้ที่สุด?
+                                เจ็บจนพร้อมจ่ายเงินแก้ปัญหา</p>
+                        </div>
+                        <div class="box box-red fragment fade-up" data-fragment-index="2">
+                            <span class="emoji-big">🤕</span>
+                            <h3 class="highlight-red">2. เจ็บอะไร?</h3>
+                            <p style="font-size:1em;color:var(--red);font-weight:700;">Pain Point</p>
+                            <p style="font-size:1em;">ปัญหาที่แท้จริงคืออะไร? กระทบต่อชีวิตประจำวันของเขายังไง?</p>
+                        </div>
+                        <div class="box box-gold fragment fade-up" data-fragment-index="3">
+                            <span class="emoji-big">🌱</span>
+                            <h3 class="highlight" style="color:#fbbf24;">3. ทำไมถึงเจ็บ?</h3>
+                            <p style="font-size:1em;color:#fbbf24;font-weight:700;">Root Cause</p>
+                            <p style="font-size:1em;">ปัญหาเกิดจากอะไร? ลองใช้เทคนิค 5 Whys เพื่อขุดหารากเหง้า</p>
+                        </div>
                     </div>
-                </div>
-                <blockquote style="margin-top:16px;">
-                    <p style="font-size:1em;font-weight:700;">"Code is the last thing you should write."<br>
-                        <span style="font-size:0.8em;font-weight:400;">(โค้ดคือสิ่งสุดท้ายที่ควรเขียน)</span>
-                    </p>
-                </blockquote>
-            </section>
-
-            <!-- 1.4 Mini Case: Maid Service -->
-            <section>
-                <h2>1.4 Mini Case: "Uber for Maids"</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">10 นาที — Scenario: ทีมอยากทำ "Uber for Maids"
-                    (แอปจองแม่บ้าน)</p>
-                <div style="display:flex;gap:24px;margin-top:12px;">
-                    <div style="flex:1;">
-                        <h3 class="bad" style="font-size:0.85em;">❌ Wrong Way</h3>
-                        <ul style="font-size:0.65em;">
-                            <li>จ้าง Dev เขียนแอป 6 เดือน</li>
-                            <li>เชื่อม Payment Gateway</li>
-                            <li>ทำระบบ GPS Tracking</li>
-                            <li class="bad">Burn เงินไป 1 ล้านบาท โดยยังไม่มีลูกค้าสักคน</li>
-                        </ul>
+                </section>
+                <section class="center" data-background-color="#0a0e1a">
+                    <h2 style="font-size: 2.5em;"><span class="emoji-med">⚒️</span> Workshop: Template A</h2>
+                    <p style="font-size: 1.2em;">เข้าเว็บไซต์ POCKit แล้วเริ่มเปิด <span class="highlight">Template
+                            A</span> ลุยได้เลย!</p>
+                    <div
+                        style="background: white; padding: 20px; display: inline-block; border-radius: 20px; margin: 30px 0;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://poc-startup.pages.dev/workshop.html"
+                            style="margin: 0; display: block;" width="300">
                     </div>
-                    <div style="flex:1;">
-                        <h3 class="good" style="font-size:0.85em;">✅ Intust Style (The Lean Way)</h3>
-                        <ol style="font-size:0.65em;">
-                            <li>สร้าง Facebook Page ยิง Ads เจาะกลุ่มแม่บ้านคอนโด</li>
-                            <li>ปุ่ม "จองเลย" ลิงก์ไปที่ Line OA</li>
-                            <li>เมื่อลูกค้าทักแชท → เราตอบเอง (ตกลงราคา/นัดเวลา)</li>
-                            <li>ลูกค้าโอนเงิน → เข้าบัญชีธนาคารเราโดยตรง (ส่งสลิปในไลน์)</li>
-                            <li>ระบบหลังบ้าน → เราโทรศัพท์หาป้าแม่บ้าน ให้ไปตามนัด</li>
-                        </ol>
+                    <p style="font-size:1.5em;color:var(--gold);font-weight:900;">poc-startup.pages.dev</p>
+                </section>
+            </section>
+
+            <!-- ====== PART 3: PROOF OF CONCEPT ====== -->
+            <section>
+                <section class="center" data-background-color="#14532d" data-transition="slide">
+                    <h2 style="color:#4ade80;font-size:3.5em;">🧪 Proof of Concept</h2>
+                    <p style="font-size: 1.5em; color: white;">จงพิสูจน์ ก่อนสร้างจริง (POC)</p>
+                </section>
+                <section class="center" data-transition="none">
+                    <span class="emoji-big" style="font-size: 5em;">🛑</span>
+                    <h2 style="font-size: 3em; color: var(--red);">หยุดเขียนโค้ด!</h2>
+                    <p class="fragment fade-in" style="font-size: 1.8em; margin-top: 20px;">ถ้ายังไม่ได้พิสูจน์ว่า <span
+                            class="highlight">"จะมีคนใช้จริงๆ"</span></p>
+                </section>
+                <section class="center" data-transition="zoom">
+                    <h2>กฎเหล็กของ POC</h2>
+                    <div class="box box-green" style="padding: 60px; max-width: 800px; margin: 0 auto;">
+                        <h2 style="margin:0; font-size: 2.2em; line-height: 1.4;">"สร้างให้ <span
+                                class="highlight-red">น้อยที่สุด</span><br>เพื่อเรียนรู้ให้ <span
+                                class="highlight-green">มากที่สุด</span>"</h2>
                     </div>
-                </div>
+                </section>
+                <section class="center">
+                    <h2>POC ต้องตอบคำถาม 2 ข้อนี้ให้ได้</h2>
+                    <div class="grid-2" style="margin-top:50px;">
+                        <div class="box box-gold fragment fade-right">
+                            <span class="emoji-big">💎</span>
+                            <h3 style="color:var(--gold); font-size: 1.8em;">Value Risk</h3>
+                            <p style="font-size: 1.2em;"><strong>"เขาอยากได้มันจริงๆ ไหม?"</strong><br><span
+                                    style="color:#a0aec0;font-size:0.85em;">(หรือเราแค่คิดไปเอง)</span></p>
+                        </div>
+                        <div class="box box-gold fragment fade-left">
+                            <span class="emoji-big">📱</span>
+                            <h3 style="color:var(--gold); font-size: 1.8em;">Usability Risk</h3>
+                            <p style="font-size: 1.2em;"><strong>"ถ้าสร้างมาแล้ว... เขาจะใช้เป็นไหม?"</strong><br><span
+                                    style="color:#a0aec0;font-size:0.85em;">(UX/UI ซับซ้อนไปหรือเปล่า)</span></p>
+                        </div>
+                    </div>
+                </section>
             </section>
 
+            <!-- ====== PART 4: 3 TECHNIQUES ====== -->
             <section>
-                <blockquote>
-                    <p style="font-size:1.1em;font-weight:700;">"เห็นไหมครับ ธุรกิจรันแล้ว ได้เงินแล้ว
-                        โดยไม่มีแอปสักตัว<br>
-                        ถ้าทำแบบนี้แล้วรุ่ง ค่อยเอา AI มาสร้างทีหลังก็ยังทัน"</p>
-                </blockquote>
+                <section class="center" data-background-color="#78350f" data-transition="slide">
+                    <h2 style="color:#fbbf24;font-size:3em;">🛠️ 3 เทคนิคพิชิต POC</h2>
+                    <p style="font-size: 1.5em; color: white;">ไม่ต้องรอรันโค้ด ก็ทดสอบตลาดได้ <br><span
+                            style="font-weight:700;">(No-Code MVP)</span></p>
+                </section>
+
+                <!-- 1. Wizard of Oz -->
+                <section data-transition="convex">
+                    <h2 style="font-size: 2.5em;"><span class="emoji-med">🎩</span> 1. Wizard of Oz</h2>
+                    <p style="font-size: 1.4em; margin-bottom: 40px;">ข้างหน้าดูเป็นระบบอัตโนมัติ <strong>แต่หลังบ้าน...
+                            ใช้คนทำล้วนๆ</strong></p>
+                    <div class="grid-2">
+                        <div class="box box-green">
+                            <h3 style="color:var(--green);"><span class="emoji-med"
+                                    style="margin:0 10px 0 0;font-size:1.2em;">✅</span> ข้อดี</h3>
+                            <p>ได้เห็นพฤติกรรมการใช้งานจริงของลูกค้า ในสภาพแวดล้อมที่ดูสมบูรณ์</p>
+                        </div>
+                        <div class="box box-red">
+                            <h3 style="color:var(--red);"><span class="emoji-med"
+                                    style="margin:0 10px 0 0;font-size:1.2em;">❌</span> ข้อเสีย</h3>
+                            <p>เหนื่อยคนทำหลังบ้าน สเกลไม่ได้</p>
+                        </div>
+                    </div>
+                </section>
+                <section
+                    data-background-image="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=2040&auto=format&fit=crop"
+                    data-transition="fade">
+                    <div class="bg-overlay"></div>
+                    <h3 style="color:#fbbf24;font-weight:900;letter-spacing:2px;">CASE STUDY</h3>
+                    <h1 style="font-size: 4em; margin-bottom: 30px;">Santabox 🎅</h1>
+                    <div class="box" style="background:rgba(0,0,0,0.6); border: 2px solid var(--gold);">
+                        <p style="font-size:1.8em;font-weight:700;color:white;margin:0;">"ให้ AI เลือกของขวัญ...
+                            <br><span class="highlight">ที่ความจริงไม่มี AI อยู่เลย</span>"</p>
+                    </div>
+                    <p class="fragment fade-up" style="color:#94a3b8;margin-top:30px;font-size:1.2em;">👉
+                        อ่านรายละเอียดเต็มๆ ในหน้า <strong>Cases</strong> บนเว็บไซต์ POCKit</p>
+                </section>
+
+                <!-- 2. Concierge -->
+                <section data-transition="convex">
+                    <h2 style="font-size: 2.5em;"><span class="emoji-med">🤝</span> 2. Concierge</h2>
+                    <p style="font-size: 1.4em; margin-bottom: 40px;">ลงไปให้บริการลูกค้า <strong>แบบ 1-on-1 แบบพรีเมียม
+                            (V.I.P)</strong></p>
+                    <div class="grid-2">
+                        <div class="box box-green">
+                            <h3 style="color:var(--green);"><span class="emoji-med"
+                                    style="margin:0 10px 0 0;font-size:1.2em;">✅</span> ข้อดี</h3>
+                            <p>ได้คุยกับลูกค้าลึกซึ้งที่สุด เข้าใจปัญหาแบบถึงแก่น สร้างความประทับใจ</p>
+                        </div>
+                        <div class="box box-red">
+                            <h3 style="color:var(--red);"><span class="emoji-med"
+                                    style="margin:0 10px 0 0;font-size:1.2em;">❌</span> ข้อเสีย</h3>
+                            <p>ลูกค้าอาจจะชอบ "ตัวเรา" ไม่ได้ชอบ "Product"</p>
+                        </div>
+                    </div>
+                </section>
+                <section
+                    data-background-image="https://images.unsplash.com/photo-1579389083046-d3ce1e3555db?q=80&w=2070&auto=format&fit=crop"
+                    data-transition="fade">
+                    <div class="bg-overlay"></div>
+                    <h3 style="color:#fbbf24;font-weight:900;letter-spacing:2px;">CASE STUDY</h3>
+                    <h1 style="font-size: 4em; margin-bottom: 30px;">RE-invent ♻️</h1>
+                    <div class="box" style="background:rgba(0,0,0,0.6); border: 2px solid var(--gold);">
+                        <p style="font-size:1.8em;font-weight:700;color:white;margin:0;">"ตู้รับซื้อขวดอัตโนมัติ...
+                            <br><span class="highlight">ที่มีคนแอบซ่อนอยู่ในตู้!</span>"</p>
+                    </div>
+                    <p class="fragment fade-up" style="color:#94a3b8;margin-top:30px;font-size:1.2em;">👉
+                        อ่านรายละเอียดเต็มๆ ในหน้า <strong>Cases</strong> บนเว็บไซต์ POCKit</p>
+                </section>
+
+                <!-- 3. Fake Door -->
+                <section data-transition="convex">
+                    <h2 style="font-size: 2.5em;"><span class="emoji-med">🚪</span> 3. Fake Door </h2>
+                    <p style="font-size: 1.4em; margin-bottom: 40px;">สร้างป้ายโฆษณาขาย Product
+                        <strong>ที่ยังไม่มีอยู่จริง</strong> (Pre-sale)</p>
+                    <div class="grid-2">
+                        <div class="box box-green">
+                            <h3 style="color:var(--green);"><span class="emoji-med"
+                                    style="margin:0 10px 0 0;font-size:1.2em;">✅</span> ข้อดี</h3>
+                            <p>ต้นทุนต่ำสุดๆ วัด Demand ตลาดได้เร็วที่สุด ตอบชัดเจนว่ามีคนยอมจ่ายไหม</p>
+                        </div>
+                        <div class="box box-red">
+                            <h3 style="color:var(--red);"><span class="emoji-med"
+                                    style="margin:0 10px 0 0;font-size:1.2em;">❌</span> ข้อเสีย</h3>
+                            <p>อาจทำให้ลูกค้าเสียความรู้สึก ถ้าจัดการระบบ "ขอโทษ/คืนเงิน" ไม่ดี</p>
+                        </div>
+                    </div>
+                </section>
+                <section
+                    data-background-image="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop"
+                    data-transition="fade">
+                    <div class="bg-overlay"></div>
+                    <h3 style="color:#fbbf24;font-weight:900;letter-spacing:2px;">CASE STUDY</h3>
+                    <h1 style="font-size: 4em; margin-bottom: 30px;">Glurr.com 🎓</h1>
+                    <div class="box" style="background:rgba(0,0,0,0.6); border: 2px solid var(--gold);">
+                        <p style="font-size:1.8em;font-weight:700;color:white;margin:0;">"แชทคุยกับเพื่อนใหม่ในมอ...
+                            <br><span class="highlight">ด้วยป้ายโฆษณาหลอกๆ ในห้องน้ำ</span>"</p>
+                    </div>
+                    <p class="fragment fade-up" style="color:#94a3b8;margin-top:30px;font-size:1.2em;">👉
+                        อ่านรายละเอียดเต็มๆ ในหน้า <strong>Cases</strong> บนเว็บไซต์ POCKit</p>
+                </section>
+
+                <section class="center" data-background-color="#0a0e1a">
+                    <h2 style="font-size: 2.5em;"><span class="emoji-med">⚒️</span> Workshop: Template B</h2>
+                    <p style="font-size: 1.2em;">หา <span class="highlight-red">ความเสี่ยงหลัก</span> และเลือก <span
+                            class="highlight">เทคนิค POC</span> ที่เหมาะสมที่สุด</p>
+                    <div
+                        style="background: white; padding: 20px; display: inline-block; border-radius: 20px; margin: 30px 0;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://poc-startup.pages.dev/workshop.html%3Ftab=B"
+                            style="margin: 0; display: block;" width="300">
+                    </div>
+                    <p style="font-size:1.5em;color:var(--gold);font-weight:900;">poc-startup.pages.dev</p>
+                </section>
             </section>
 
-            <!-- ========== PART 2: THE TECHNIQUES ========== -->
+            <!-- ====== PART 5: VALIDATE & 30-SEC TEST ====== -->
             <section>
-                <div style="text-align:center;">
-                    <span class="part-badge">PART 2</span>
-                    <h2 style="margin-top:16px;">The Techniques<br>"Fake It Till You Make It"</h2>
-                    <p style="font-size:0.8em;color:rgba(255,255,255,0.6);">13:00 - 14:15</p>
-                    <p>Objective: สอนวิธีสร้าง <span class="highlight">"ภาพลักษณ์ธุรกิจ" (Business Illusion)</span>
-                        โดยไม่ต้องเขียนโค้ด<br>
-                        เพื่อทดสอบความต้องการ (Demand)</p>
-                </div>
+                <section class="center" data-background-color="#312e81" data-transition="slide">
+                    <h2 style="color:#818cf8;font-size:3.5em;">🎯 Validation</h2>
+                    <p style="font-size: 1.5em; color: white;">จะรู้ได้ยังไง... ว่ามาถูกทาง?</p>
+                </section>
+                <section class="center">
+                    <h2 style="font-size: 2.5em; margin-bottom: 40px;">3 คำถามชี้ชะตา ☠️</h2>
+                    <div class="grid-3" style="text-align: left;">
+                        <div class="box box-gold fragment fade-up" data-fragment-index="1">
+                            <div
+                                style="font-size: 3em; font-weight: 900; color: var(--gold); opacity: 0.3; margin-bottom: -20px;">
+                                Q1</div>
+                            <h4 style="font-size: 1.2em; line-height: 1.5;">เราจะใช้วิธีไหนถึงจะรู้ได้ว่า <span
+                                    class="highlight">มันคือปัญหาจริงๆ</span> ของลูกค้า?</h4>
+                        </div>
+                        <div class="box box-gold fragment fade-up" data-fragment-index="2">
+                            <div
+                                style="font-size: 3em; font-weight: 900; color: var(--gold); opacity: 0.3; margin-bottom: -20px;">
+                                Q2</div>
+                            <h4 style="font-size: 1.2em; line-height: 1.5;">เราจะทำ Prototypeแบบไหน <br><span
+                                    class="highlight">ไปทดสอบ?</span></h4>
+                        </div>
+                        <div class="box box-red fragment fade-up" data-fragment-index="3"
+                            style="box-shadow: 0 0 40px rgba(239,68,68,0.2);">
+                            <div
+                                style="font-size: 3em; font-weight: 900; color: var(--red); opacity: 0.3; margin-bottom: -20px;">
+                                Q3</div>
+                            <h4 style="font-size: 1.2em; line-height: 1.5; color: white;">อะไรคือสิ่งที่บอกว่า <br><span
+                                    class="highlight-red">เขาจะเป็นลูกค้าเราจริงๆ?</span></h4>
+                        </div>
+                    </div>
+                    <p class="fragment fade-in"
+                        style="font-size: 1.6em; font-weight: 800; color: var(--red); margin-top: 40px; background: rgba(239,68,68,0.1); padding: 15px 30px; border-radius: 100px; display: inline-block;">
+                        "อย่าเชื่อคำบอกชอบ ให้เชื่อการยอมจ่าย"</p>
+                </section>
+
+                <section class="center" data-background-color="#7f1d1d" data-transition="zoom">
+                    <span class="emoji-big" style="font-size: 5em;">⏱️</span>
+                    <h1 style="font-size: 4em; color: white; text-shadow: 0 0 50px rgba(0,0,0,0.8);">30-Seconds Test
+                    </h1>
+                </section>
+                <section class="center" data-transition="fade">
+                    <h2 style="font-size: 2.2em; text-transform:none; color: white;">กฎเหล็กของ Pitching:</h2>
+                    <div class="box box-red" style="padding: 50px; margin: 40px auto; max-width: 800px;">
+                        <p style="font-size:2em; font-weight: 900; margin:0; line-height: 1.3;">
+                            "ถ้าพิทช์จบใน 30 วิ <br>แล้วคนยังงง..."
+                        </p>
+                    </div>
+                    <h1 class="fragment zoom-in highlight-red"
+                        style="font-size: 5em; margin-top: 20px; text-shadow: 0 0 50px rgba(239,68,68,0.5);">เท่ากับ
+                        พัง! 💥</h1>
+                </section>
+                <section class="center" data-transition="slide">
+                    <h2 style="font-size: 2.5em; margin-bottom: 20px;">มาลองทดสอบกัน!</h2>
+                    <p style="font-size: 1.3em;">สแกนเพื่อเข้าสู่ <span class="highlight">หน้าจับเวลาและโหวต</span></p>
+
+                    <div
+                        style="background: white; padding: 25px; display: inline-block; border-radius: 20px; margin: 30px 0;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://poc-startup.pages.dev/30sec-test.html"
+                            style="margin: 0; display: block;" width="300">
+                    </div>
+
+                    <p style="font-size: 1.5em; font-weight: 800; color: var(--gold);">poc-startup.pages.dev/30sec</p>
+                </section>
             </section>
 
-            <!-- 2.1 Wizard of Oz -->
-            <section>
-                <h2>2.1 Technique 1: The Wizard of Oz</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">20 นาที</p>
-                <ul>
-                    <li><strong>Concept:</strong> หน้าบ้านดู <span class="highlight">High-tech</span> (เหมือนมี
-                        AI/Automation) แต่หลังบ้านใช้ <span class="bad">คน (Human)</span> ทำงานแทน</li>
-                </ul>
-            </section>
+            <!-- ====== OUTRO ====== -->
+            <section class="center" data-background-color="#f0b90b" data-transition="zoom">
+                <span class="emoji-big" style="font-size: 5em;">🚀</span>
+                <h1 style="color:#000;font-size:5em;font-weight:900;text-shadow:none;margin-bottom:20px;">LET'S BUILD!
+                </h1>
+                <p style="color:#333;font-size:1.8em;font-weight:800;margin-bottom: 40px;">ทีมพร้อม แผนพร้อม เปิดเว็บ
+                    POCKit ลุยได้เลย</p>
 
-            <!-- Case Study: Santabox -->
-            <section>
-                <h2>🚨 Case Study: Santabox (2015)</h2>
-                <ul>
-                    <li><strong>Goal:</strong> อยากทำ Big Data Analytics วิเคราะห์พฤติกรรมผู้บริโภคเพื่อขายแบรนด์สินค้า
-                    </li>
-                    <li><strong>The Hack:</strong>
-                        <ul style="font-size:0.9em;">
-                            <li><strong>Frontend:</strong> สร้าง Facebook Page + Landing Page สวยๆ หลอกล่อด้วยคำว่า
-                                "ลงทะเบียนรับกล่องสุ่มสินค้าแบรนด์ดังฟรี"</li>
-                            <li><strong>Backend:</strong> ปุ่มสมัครลิงก์ไป Google Forms (ไม่ใช่ Database หรู)</li>
-                            <li><strong>Algorithm:</strong> ใช้ Google Sheets + มือคนนั่ง Filter เอง (เช่น
-                                แบรนด์อยากแจกคนชอบเที่ยวทะเล → กด Ctrl+F หาคำว่า 'ทะเล' → ก๊อปเบอร์โทรออกมา)</li>
-                            <li><strong>Notification:</strong> ส่ง SMS แจ้งเตือนทีละเบอร์ (Manual) ให้คนมากดรับของ</li>
-                        </ul>
-                    </li>
-                </ul>
-            </section>
-
-            <section>
-                <blockquote>
-                    <p style="font-size:1em;font-weight:700;">"พี่สร้างธุรกิจ Data โดยไม่มี Code สักบรรทัดในปีแรก<br>
-                        พี่ใช้เครื่องมือฟรี (Free Tools) มาปะติดปะต่อกัน (Stitch together) จนเกิด Business ได้"</p>
-                </blockquote>
-                <a href="/cases.html" class="btn-link" target="_blank">📚 ดู Santabox Case Study เพิ่ม</a>
-            </section>
-
-            <!-- 2.2 Concierge -->
-            <section>
-                <h2>2.2 Technique 2: The Concierge</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">20 นาที</p>
-                <ul>
-                    <li><strong>Concept:</strong> บริการลูกค้าด้วยมือตัวเองแบบ <span class="highlight">VIP (Manual
-                            Service)</span> เพื่อเรียนรู้พฤติกรรม</li>
-                </ul>
-            </section>
-
-            <!-- Case Study: RE-invent -->
-            <section>
-                <h2>🚨 Case Study: RE-invent (2022)</h2>
-                <ul>
-                    <li><strong>Insight:</strong> ต้นทุนค่าขวด = <span class="highlight">25% ของราคาน้ำยาซักผ้า</span>
-                        ถ้าตัดออกได้ จะขายถูกกว่าคู่แข่ง</li>
-                    <li><strong>The Hack:</strong>
-                        <ul style="font-size:0.9em;">
-                            <li><strong>Human Vending Machine:</strong> ก่อนลงทุนแสนนึงสร้างตู้ Automation
-                                พี่จ้างน้องนิสิตไป "ยืนขาย" ใต้หอมอเกษตรฯ (เอาน้ำยาใส่แกลลอนไปตั้ง)
-                                เพื่อดูว่าเด็กหอจะเอาขวดลงมาเติมจริงไหม? เติมกี่ ml?</li>
-                            <li><strong>Incentive Strategy:</strong> ลงทุนซื้อ <span
-                                    class="highlight">บัตรสุกี้ตี๋น้อย</span> (3,000 บาท) และ Starbucks
-                                มาจับฉลากแจกแลกกับการตอบแบบสอบถามและการดมกลิ่น (Blind Test)</li>
-                        </ul>
-                    </li>
-                </ul>
-            </section>
-
-            <section>
-                <blockquote>
-                    <p style="font-size:1em;font-weight:700;">"การลงทุนซื้อ Data (ค่าจ้างคน/ค่าของรางวัล)
-                        คุ้มค่ากว่าการลงทุนสร้างตู้ Machine ที่ไม่มีคนใช้"</p>
-                </blockquote>
-                <a href="/cases.html" class="btn-link" target="_blank">📚 ดู RE-invent Case Study เพิ่ม</a>
-            </section>
-
-            <!-- Concierge vs Wizard of Oz Comparison -->
-            <section>
-                <h2>Concierge vs Wizard of Oz</h2>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>🎩 Wizard of Oz</th>
-                        <th>🤝 Concierge</th>
-                    </tr>
-                    <tr>
-                        <td><strong>หน้าบ้าน</strong></td>
-                        <td>ดู Hi-tech (เหมือนมี AI)</td>
-                        <td>เป็นคนจริงเปิดเผย</td>
-                    </tr>
-                    <tr>
-                        <td><strong>หลังบ้าน</strong></td>
-                        <td>คนทำเอง (ลูกค้าไม่รู้)</td>
-                        <td>คนทำเอง (ลูกค้ารู้)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>จิตวิทยา</strong></td>
-                        <td class="highlight">High Tech Fake</td>
-                        <td class="gold">High Touch Real</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ตัวอย่าง</strong></td>
-                        <td>Santabox</td>
-                        <td>RE-invent</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ใช้เมื่อ</strong></td>
-                        <td>ต้องการ wow ลูกค้า</td>
-                        <td>ต้องการ data พฤติกรรม</td>
-                    </tr>
-                </table>
-            </section>
-
-            <!-- 🌟 Secret Technique: Fake Door -->
-            <section>
-                <h2>🌟 Secret Technique: The Fake Door</h2>
-                <ul>
-                    <li><strong>Concept:</strong> แปะป้ายขายของที่ยังไม่มีจริง เพื่อวัดยอดคนกด <span
-                            class="highlight">(Click-through Rate)</span></li>
-                    <li><strong>Example:</strong> สร้าง Landing Page ขาย "โปรแกรม AI ตรวจจับฝุ่น" ใส่ปุ่ม "ซื้อเลย 999
-                        บาท" → พอลูกค้ากด → ขึ้นหน้าจอว่า <span class="gold">"Coming Soon / สินค้าหมดชั่วคราว"</span> →
-                        แล้วนับจำนวนคนที่กดปุ่มนี้เพื่อวัด Demand</li>
-                    <li><strong>จริยธรรม:</strong> <span class="bad">ห้ามตัดเงินจริง!</span> ต้องมี "รางวัลปลอบใจ" (เช่น
-                        Discount Code / Early Access)</li>
-                </ul>
-                <a href="/fake-door.html" class="btn-link" target="_blank">🚪 ดูตัวอย่าง Fake Door</a>
-            </section>
-
-            <!-- 2.3 Workshop: Hunt the Risk -->
-            <section>
-                <h2>2.3 Workshop: "Hunt the Risk" & Manual Plan</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">30 นาที</p>
-                <ul>
-                    <li><strong>The Challenge:</strong> <span class="highlight">"สมมติพี่ให้เงิน 1 ล้านบาท อะไรคือ
-                            'ความเสี่ยงเดียว' ที่ถ้าเกิดขึ้น โปรเจกต์นี้จะเจ๊งทันที?"</span></li>
-                    <li><strong>Assignment 1 (Validation Plan):</strong> ให้น้องเลือกใช้เทคนิค (Wizard of Oz / Concierge
-                        / Fake Door) ออกแบบวิธีทดสอบความเสี่ยงนั้นให้รู้ผลใน 24 ชม.
-                        <ul>
-                            <li><em>Example:</em> กลัวหมอไม่ยอมใช้แอป → Plan: ลองโทรศัพท์ไปคุยกับหมอ 10 คนเดี๋ยวนี้เลย
-                                หรือทำ Fake Brochure ไปวางที่คลินิก</li>
-                        </ul>
-                    </li>
-                    <li><strong>Assignment 2 (Paper Sketch):</strong> วาดหน้าจอ UI ง่ายๆ ใส่กระดาษ A4 (3-4 หน้า) เช่น
-                        หน้าแรก, หน้ารายละเอียด, หน้ายืนยัน</li>
-                    <li><strong>Action:</strong> เอา Paper Sketch เดินไปเทสกับเพื่อนต่างกลุ่ม ถามว่า "กดตรงไหน?
-                        เข้าใจไหมว่าหน้านี้คืออะไร?"</li>
-                </ul>
-                <a href="/workshop.html" class="btn-link" target="_blank">📝 เปิดหน้า Workshop Template B</a>
-            </section>
-
-            <!-- Break -->
-            <section>
-                <div style="text-align:center;">
-                    <p style="font-size:4em;">☕</p>
-                    <h2>Break</h2>
-                    <p>15 นาที</p>
-                </div>
-            </section>
-
-            <!-- ========== PART 3: THE BUILDER ========== -->
-            <section>
-                <div style="text-align:center;">
-                    <span class="part-badge">PART 3</span>
-                    <h2 style="margin-top:16px;">The Builder<br>"Beauty & The Business"</h2>
-                    <p style="font-size:0.8em;color:rgba(255,255,255,0.6);">14:30 - 15:30</p>
-                    <p>Objective: ใช้ AI เปลี่ยน <span class="highlight">"กระดาษ"</span> ให้เป็น <span
-                            class="highlight">"หน้าบ้านที่สวยงาม"</span><br>
-                        เพื่อใช้ดึงดูดความสนใจ (Pitching/Marketing)</p>
-                </div>
-            </section>
-
-            <!-- 3.1 Intro to AI Prototyping -->
-            <section>
-                <h2>3.1 Intro to AI Prototyping</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">15 นาที</p>
-                <ul>
-                    <li><strong>Concept:</strong> "เมื่อกี้เราวางแผนระบบหลังบ้าน (Manual Backend) เสร็จแล้ว ทีนี้มาสร้าง
-                        <span class="highlight">หน้าบ้าน (Frontend) ให้สวยและดูน่าเชื่อถือ</span> ด้วย AI กัน"</li>
-                    <li><strong>Tool Demo:</strong> สาธิตการใช้ Antigravity (หรือเครื่องมืออื่น)
-                        <ul>
-                            <li>ถ่ายรูป Paper Sketch ที่วาดเมื่อกี้</li>
-                            <li>อัปโหลดเข้า AI → เขียน Prompt สั้นๆ</li>
-                            <li>AI Gen ออกมาเป็น UI Design ที่สวยงามและ Clickable</li>
-                        </ul>
-                    </li>
-                </ul>
-            </section>
-
-            <!-- 3.2 AI Sprint -->
-            <section>
-                <h2>3.2 Workshop: AI Sprint</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">45 นาที</p>
-                <ul>
-                    <li><strong>Activity:</strong> ให้น้องลงมือทำ Prototype สวยๆ (Frontend) ที่สอดคล้องกับแผน Manual
-                        ที่วางไว้</li>
-                    <li><strong>Constraint:</strong> <span class="bad">ห้ามทำฟีเจอร์เกินจริง</span>
-                        ให้ทำเฉพาะหน้าจอที่จำเป็นต้องใช้ในการ "หลอก" (Validate) ลูกค้าตามแผน Part 2</li>
-                    <li><strong>Roleplay:</strong> คุณอินทัธเดินให้คำแนะนำเรื่อง Prompt และ Logic การเชื่อมโยงหน้าจอ
-                    </li>
-                </ul>
-            </section>
-
-            <!-- ========== PART 4: THE WRAP-UP ========== -->
-            <section>
-                <div style="text-align:center;">
-                    <span class="part-badge">PART 4</span>
-                    <h2 style="margin-top:16px;">The Wrap-up</h2>
-                    <p style="font-size:0.8em;color:rgba(255,255,255,0.6);">15:30 - 16:00</p>
-                    <p>Objective: สรุปจบ ดึงสติ และเชื่อมโยงไปสู่วิชาการเงิน (Finance)</p>
-                </div>
-            </section>
-
-            <!-- 4.1 Showcase -->
-            <section>
-                <h2>4.1 Showcase</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">15 นาที</p>
-                <ul>
-                    <li><strong>Activity:</strong> สุ่ม 2-3 ทีม ให้ออกมาโชว์ผลงานเปรียบเทียบ:
-                        <ul>
-                            <li>ภาพ 1: แผนบนกระดาษ (Manual Plan)</li>
-                            <li>ภาพ 2: ผลลัพธ์จาก AI (Antigravity Prototype)</li>
-                        </ul>
-                    </li>
-                </ul>
-                <a href="/30sec-test.html" class="btn-link" target="_blank">🎯 เปิดหน้า 30-Second Test</a>
-            </section>
-
-            <!-- 4.2 Closing Speech -->
-            <section>
-                <h2>4.2 Closing Speech</h2>
-                <p style="font-size:0.7em;color:rgba(255,255,255,0.5);">15 นาที</p>
-                <ul>
-                    <li><strong class="highlight">The Reality Check:</strong> "น้องครับ AI (Antigravity)
-                        ช่วยให้เราสร้างของ 'สวย' ได้ใน 1 ชั่วโมง (เหมือนหน้าเพจ Santabox)... <span class="bad">แต่ AI
-                            ไม่ได้ช่วยให้ 'ขายได้'</span>"</li>
-                    <li><strong class="highlight">The Value of Validation:</strong> "ความสวยมีไว้ดึงดูดสายตา (Eyeballs)
-                        แต่ <span class="highlight">Validation Plan ที่น้องคิดใน Part 2</span> (Google Sheets/Manual
-                        Service) ต่างหากที่จะดึงดูด <span class="gold">'เงิน' (Wallet)</span> ในกระเป๋าลูกค้า"</li>
-                    <li><strong class="highlight">Call to Action (The Bridge to Finance):</strong> "การบ้านคือ... เอา
-                        Prototype สวยๆ ตัวนี้ ไปเทสกับลูกค้าจริงๆ (ยิง Ads/โพสต์ลงกลุ่ม) แล้วรันระบบมือหมุนเพื่อเก็บ
-                        Data ตัวเลขจริงๆ (คนลงชื่อกี่คน, คนโอนเงินกี่คน) <span
-                            class="highlight">มาส่งพี่วิทยากรการเงินอาทิตย์หน้าครับ</span>"</li>
-                    <li class="bad"><strong>"ถ้าไม่มี Data ตัวเลขการเงินในแผนธุรกิจของน้อง ก็คือเรื่องมโนครับ"</strong>
-                    </li>
-                </ul>
-            </section>
-
-            <!-- Thank you -->
-            <section>
-                <div style="text-align:center;">
-                    <h2 style="font-size:2.5em;">🙏</h2>
-                    <p style="font-size:1.2em;color:var(--gold);font-weight:700;">ขอบคุณครับ</p>
-                    <p style="font-size:0.8em;color:rgba(255,255,255,0.5);margin-top:24px;">POCKit Toolkit: <a href="/"
-                            style="color:var(--gold);">pockit.intust.dev</a></p>
+                <div
+                    style="background: black; padding: 20px 40px; display: inline-block; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <p style="color:var(--gold);font-size:1.8em;font-weight:900;margin:0;letter-spacing:1px;">
+                        poc-startup.pages.dev</p>
                 </div>
             </section>
 
@@ -656,13 +546,15 @@
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
     <script>
         Reveal.initialize({
-            hash: true,
-            slideNumber: true,
-            progress: true,
             controls: true,
+            progress: true,
+            center: false,
+            hash: true,
             transition: 'slide',
-            width: 1280,
-            height: 720,
+            backgroundTransition: 'fade',
+            margin: 0.1,
+            disableLayout: false,
+            slideNumber: 'c/t',
         });
     </script>
 </body>

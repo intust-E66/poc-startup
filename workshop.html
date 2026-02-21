@@ -286,6 +286,7 @@
         };
 
         window.submitTemplateA = function () {
+            const teamName = document.getElementById('teamNameA').value || 'ไม่ระบุชื่อทีม';
             const user = document.getElementById('psUser').value;
             const pain = document.getElementById('psPain').value;
             const cause = document.getElementById('psCause').value;
@@ -293,18 +294,60 @@
                 alert('กรุณากรอกข้อมูลให้ครบก่อนส่ง (กลุ่มเป้าหมาย, ปัญหา, สาเหตุ)');
                 return;
             }
+
+            const ps = `"${user}" มีปัญหา "${pain}" เพราะ "${cause}"`;
+
+            // Save to LocalStorage for Dashboard
+            let teams = JSON.parse(localStorage.getItem('pockit_teams') || '[]');
+            let existingIdx = teams.findIndex(t => t.name === teamName);
+
+            const teamData = {
+                name: teamName,
+                problem: ps,
+                status: 'pending', // Default status
+                q1: document.getElementById('q1').value,
+                q2: document.getElementById('q2').value,
+                q3: document.getElementById('q3').value
+            };
+
+            if (existingIdx >= 0) {
+                teams[existingIdx] = { ...teams[existingIdx], ...teamData };
+            } else {
+                teams.push(teamData);
+            }
+            localStorage.setItem('pockit_teams', JSON.stringify(teams));
+
             document.getElementById('submitSuccessA').classList.remove('hidden');
             document.getElementById('submitSuccessA').scrollIntoView({ behavior: 'smooth' });
         };
 
         window.submitTemplateB = function () {
-            const team = document.getElementById('teamNameB').value;
+            const teamName = document.getElementById('teamNameB').value || 'ไม่ระบุชื่อทีม';
             const risk = document.getElementById('riskMain').value;
             const techniques = [...document.querySelectorAll('input[name=technique]:checked')].map(el => el.value);
-            if (!team || !risk || techniques.length === 0) {
+            if (!teamName || !risk || techniques.length === 0) {
                 alert('กรุณากรอกชื่อทีม, ความเสี่ยง, และเลือกเทคนิคอย่างน้อย 1 อัน');
                 return;
             }
+
+            let teams = JSON.parse(localStorage.getItem('pockit_teams') || '[]');
+            let existingIdx = teams.findIndex(t => t.name === teamName);
+
+            const teamData = {
+                name: teamName,
+                risk: risk,
+                technique: techniques[0], // Using the first selected technique for display
+                testPlan: document.getElementById('testPlan').value,
+                status: 'working'
+            };
+
+            if (existingIdx >= 0) {
+                teams[existingIdx] = { ...teams[existingIdx], ...teamData };
+            } else {
+                teams.push(teamData);
+            }
+            localStorage.setItem('pockit_teams', JSON.stringify(teams));
+
             document.getElementById('submitSuccessB').classList.remove('hidden');
             document.getElementById('submitSuccessB').scrollIntoView({ behavior: 'smooth' });
         };

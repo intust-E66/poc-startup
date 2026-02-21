@@ -203,7 +203,10 @@
 
         // Check if there's an active team to vote for
         function checkActiveTeam() {
-            const activeTeam = localStorage.getItem('pockit_active_team');
+            const params = new URLSearchParams(window.location.search);
+            const urlTeam = params.get('team');
+            const activeTeam = urlTeam || localStorage.getItem('pockit_active_team');
+
             if (activeTeam && !hasVoted(activeTeam)) {
                 document.getElementById('waitingState').classList.add('hidden');
                 document.getElementById('votingState').classList.remove('hidden');

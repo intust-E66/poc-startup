@@ -137,12 +137,22 @@
 </head>
 
 <body>
-    <main class="main">
+    <main class="main" id="dashboardContent" style="display:none;">
         <section class="section container">
-            <div class="hero__badge">📊 Team Dashboard</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div class="hero__badge">📊 Team Dashboard</div>
+                <button class="btn btn--outline" id="logoutBtn"
+                    style="padding:6px 16px;font-size:0.8rem;">Logout</button>
+            </div>
             <h1 style="font-size:2rem;font-weight:900;margin-bottom:8px;">Team Dashboard</h1>
-            <p style="color:var(--text-secondary);margin-bottom:32px;">ดูภาพรวมทุกทีม — สำหรับ Mentor
-                ใช้ระหว่างเดินถามรายทีม</p>
+            <div
+                style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:12px;">
+                <p style="color:var(--text-secondary);margin:0;">ดูภาพรวมทุกทีม — สำหรับ Mentor ใช้ระหว่างเดินถามรายทีม
+                </p>
+                <button class="btn" id="resetDataBtn"
+                    style="background:rgba(239, 68, 68, 0.1);color:var(--red);border:1px solid rgba(239, 68, 68, 0.3);padding:8px 16px;font-size:0.85rem;">⚠️
+                    Reset Data ทั้งหมด</button>
+            </div>
 
             <!-- Stats Overview -->
             <div class="stats-row" id="statsRow">
@@ -220,6 +230,32 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
+    <div id="loginModal"
+        style="position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg-primary);display:flex;align-items:center;justify-content:center;z-index:9999;">
+        <div
+            style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:40px;width:100%;max-width:400px;text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">🔐</div>
+            <h2 style="margin-bottom:8px;">Dashboard Login</h2>
+            <p style="color:var(--text-secondary);margin-bottom:24px;font-size:0.9rem;">กรุณาเข้าสู่ระบบเพื่อดูข้อมูลทีม
+            </p>
+
+            <div class="form-group" style="text-align:left;">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="loginUser" placeholder="Enter username">
+            </div>
+            <div class="form-group" style="text-align:left;">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" id="loginPass" placeholder="Enter password">
+            </div>
+
+            <div id="loginError" style="color:var(--red);font-size:0.85rem;margin-bottom:16px;display:none;">❌ Username
+                หรือ Password ไม่ถูกต้อง</div>
+
+            <button class="btn btn--primary" style="width:100%;padding:14px;" id="loginSubmitBtn">เข้าสู่ระบบ</button>
+        </div>
+    </div>
+
     <script type="module">
         import { createNav, createFooter } from '/js/components.js';
         createNav('dashboard');
@@ -227,6 +263,43 @@
 
         let teams = JSON.parse(localStorage.getItem('pockit_teams') || '[]');
         let editIdx = -1;
+
+        // Login Logic
+        const IS_LOGGED_IN = sessionStorage.getItem('dashboard_auth') === 'true';
+        if (IS_LOGGED_IN) {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('dashboardContent').style.display = 'block';
+        }
+
+        document.getElementById('loginSubmitBtn').addEventListener('click', () => {
+            const u = document.getElementById('loginUser').value;
+            const p = document.getElementById('loginPass').value;
+            
+            if (u === 'intust' && p === 'aitest66') {
+                sessionStorage.setItem('dashboard_auth', 'true');
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.removeItem('dashboard_auth');
+            location.reload();
+        });
+
+        document.getElementById('resetDataBtn').addEventListener('click', () => {
+            if (confirm('⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลทุกทีม?\n(ข้อมูลจะไม่สามารถกู้คืนได้)')) {
+                const confirmText = prompt('พิมพ์คำว่า "RESET" เพื่อยืนยันการลบข้อมูล:');
+                if (confirmText === 'RESET') {
+                    localStorage.removeItem('pockit_teams');
+                    teams = [];
+                    renderTeams();
+                    alert('✅ ลบข้อมูลทั้งหมดเรียบร้อยแล้ว');
+                }
+            }
+        });
 
         function saveTeams() {
             localStorage.setItem('pockit_teams', JSON.stringify(teams));
@@ -263,6 +336,7 @@
             <div class="team-card__label">เทคนิค</div>
             <div class="team-card__value">${techniqueLabel}</div>
           </div>
+          ${team.risk ? `<div class="team-card__field"><div class="team-card__label">ความเสี่ยงหลัก</div><div class="team-card__value" style="font-size:0.85rem;color:var(--text-muted);">${team.risk}</div></div>` : ''}
           ${team.notes ? `<div class="team-card__field"><div class="team-card__label">Notes</div><div class="team-card__value">${team.notes}</div></div>` : ''}
           <div style="display:flex;gap:8px;margin-top:16px;">
             <button class="btn btn--outline" style="flex:1;padding:8px;" data-edit="${i}">✏️ แก้ไข</button>
@@ -351,6 +425,18 @@
         document.getElementById('teamModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) closeModal();
         });
+
+        // Auto-refresh data every 5 seconds to catch new submissions
+        setInterval(() => {
+            if (sessionStorage.getItem('dashboard_auth') === 'true') {
+                const newTeams = JSON.parse(localStorage.getItem('pockit_teams') || '[]');
+                // Simple equality check by stringify to avoid re-rendering if no changes
+                if (JSON.stringify(newTeams) !== JSON.stringify(teams)) {
+                    teams = newTeams;
+                    renderTeams();
+                }
+            }
+        }, 5000);
 
         renderTeams();
     </script>

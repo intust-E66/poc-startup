@@ -360,8 +360,11 @@
             }).join('');
         }
 
-        function generateQR() {
-            const baseUrl = window.location.origin + '/vote.html';
+        function generateQR(teamName = '') {
+            let baseUrl = window.location.origin + '/vote.html';
+            if (teamName) {
+                baseUrl += '?team=' + encodeURIComponent(teamName);
+            }
             document.getElementById('voteUrl').textContent = baseUrl;
             const canvas = document.getElementById('qrCanvas');
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(baseUrl)}&bgcolor=0a0e1a&color=f0b90b`;
@@ -488,9 +491,14 @@
             noVotes = 0;
             updateVoteDisplay();
             setActiveTeam('');
+            generateQR('');
             document.getElementById('teamName').value = '';
             document.getElementById('teamName').focus();
             updateScoreboard();
+        });
+
+        document.getElementById('teamName').addEventListener('input', (e) => {
+            generateQR(e.target.value.trim());
         });
 
         // Generate QR on load
