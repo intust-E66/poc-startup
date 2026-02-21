@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies — POCKit</title>
+    <meta name="description" content="3 Case Studies จริง: Santabox, RE-invent, Glurr — จากรุ่นพี่ KU Startup">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .case-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .case-gallery img {
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .case-gallery img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.92);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="section container">
+            <div class="content">
+                <div class="hero__badge">📚 Case Studies</div>
+                <h1>3 เคสจริงจากรุ่นพี่</h1>
+                <p>เรื่องราวของคนที่ทำ POC สำเร็จ — ไม่ต้อง code แม้แต่บรรทัดเดียว</p>
+            </div>
+        </section>
+
+        <!-- Case 1: Santabox -->
+        <section class="section container">
+            <div class="case-card">
+                <div class="case-card__header">
+                    <div class="case-card__emoji">🎅</div>
+                    <span class="case-card__year">2015</span>
+                    <h2 class="case-card__title">Santabox</h2>
+                    <div class="case-card__subtitle">Wizard of Oz — "Fake it till you make it"</div>
+                </div>
+                <div class="case-card__body">
+                    <div class="case-card__section">
+                        <h4>🎯 Goal</h4>
+                        <p>อยากทำ Big Data Analytics วิเคราะห์พฤติกรรมผู้บริโภคเพื่อขายแบรนด์สินค้า — Platform
+                            รู้ลึกว่าผู้หญิงคนนี้ชอบออกกำลังกายและแต่งหน้า → ส่งสินค้าทดลองจากแบรนด์ให้ตรงเป๊ะ →
+                            เก็บ Feedback กลับมาขายแบรนด์ ฟังเหมือนต้องใช้ AI, Machine Learning ใช่ไหม?</p>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>🛠️ The Hack (MVP Stack จริงๆ ปี 2015 ยังไม่มี AI)</h4>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Frontend</strong></td>
+                                    <td>สร้าง Facebook Page (<a href="https://facebook.com/getsantabox"
+                                            target="_blank">14,179 likes</a>) + Landing Page สวยๆ
+                                        หลอกล่อด้วยคำว่า "ลงทะเบียนรับกล่องสุ่มสินค้าแบรนด์ดังฟรี"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Backend</strong></td>
+                                    <td>ปุ่มสมัครลิงก์ไป Google Forms (ไม่ใช่ Database หรู)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Algorithm</strong></td>
+                                    <td>ใช้ Google Sheets + มือคนนั่ง Filter เอง (เช่น แบรนด์อยากแจกคนชอบเที่ยวทะเล
+                                        → กด Ctrl+F หาคำว่า 'ทะเล' → ก๊อปเบอร์โทรออกมา)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Notification</strong></td>
+                                    <td>ส่ง SMS แจ้งเตือนทีละเบอร์ (Manual) ให้คนมากดรับของ</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Logistics</strong></td>
+                                    <td>ไปรษณีย์ไทย</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>📋 กระบวนการ</h4>
+                        <ol>
+                            <li><strong>ตกปลา</strong> — Landing Page สวยๆ → ปุ่มสมัครเด้งไป Google Form → ยิงโพสต์ใน
+                                FB Page "ลงทะเบียนรับกล่องสุ่มสินค้าแบรนด์ดังฟรี!" → คนแห่กรอกข้อมูลเป็นพันๆ</li>
+                            <li><strong>Algorithm ทำมือ</strong> — แบรนด์บอก "อยากแจกครีมกันแดดให้คนชอบเที่ยวทะเล" →
+                                เปิด Sheets กด Ctrl+F กรองคนที่ติ๊ก "ชอบเที่ยวทะเล" → ส่ง SMS แจ้ง → ลิงก์ไป
+                                Google Form อีกอันเพื่อขอที่อยู่จัดส่ง</li>
+                            <li><strong>Value Loop</strong> — ลูกค้าใช้สินค้า → ส่ง SMS ขอ Feedback → เอา Feedback ใส่
+                                Excel ทำกราฟสวยๆ → เดินไปขายแบรนด์ → <strong>ได้เงิน!</strong></li>
+                        </ol>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>📸 Screenshots จริง</h4>
+                        <div class="case-gallery">
+                            <img src="/cases/santabox1.png" alt="Santabox — Landing Page" loading="lazy"
+                                onclick="openLightbox(this)">
+                            <img src="/cases/Santabox2.png" alt="Santabox — Facebook Page" loading="lazy"
+                                onclick="openLightbox(this)">
+                            <img src="/cases/Santabox3.png" alt="Santabox — Google Form" loading="lazy"
+                                onclick="openLightbox(this)">
+                            <img src="/cases/Santabox4.png" alt="Santabox — Dashboard" loading="lazy"
+                                onclick="openLightbox(this)">
+                        </div>
+                    </div>
+
+                    <div class="case-card__takeaway">
+                        <div class="case-card__takeaway-label">🎯 Key Takeaway</div>
+                        <p>"พี่สร้างธุรกิจ Data <strong>โดยไม่มี Code สักบรรทัดในปีแรก</strong>
+                            พี่ใช้เครื่องมือฟรี (Free Tools) มาปะติดปะต่อกัน (Stitch together) จนเกิด Business ได้
+                            — ถ้าปี 2015 ยังทำได้โดยไม่มี AI... ปี 2026 ที่มี AI ช่วยเขียนโค้ด
+                            ยิ่งไม่มีข้ออ้างที่จะไม่เริ่มทำ POC!"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case 2: RE-invent -->
+        <section class="section container" style="padding-top:0;">
+            <div class="case-card">
+                <div class="case-card__header">
+                    <div class="case-card__emoji">🧴</div>
+                    <span class="case-card__year">2022</span>
+                    <h2 class="case-card__title">RE-invent</h2>
+                    <div class="case-card__subtitle">Concierge — "Data-Driven Disruption"</div>
+                </div>
+                <div class="case-card__body">
+                    <div class="case-card__section">
+                        <h4>🔍 Insight</h4>
+                        <p>ต้นทุนค่าขวด = <strong>25% ของราคาน้ำยาซักผ้า</strong> ถ้าตัดออกได้
+                            จะขายถูกกว่าคู่แข่ง → <strong>ไอเดียตู้ Refill</strong></p>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>👥 หากลุ่มเป้าหมาย</h4>
+                        <ul>
+                            <li>คนวัยทำงานมี Brand Loyalty สูง ไม่ยอมเปลี่ยนง่าย</li>
+                            <li>ล็อกเป้า → <strong>"เด็กหอ" (First-time Washers)</strong> — เพิ่งออกมาอยู่หอครั้งแรก
+                                ไม่สนแบรนด์ ขอแค่ถูก สะอาด หอม</li>
+                        </ul>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>🤝 The Hack: "Human Vending Machine" (Concierge MVP)</h4>
+                        <ul>
+                            <li>ก่อนลงทุนแสนนึงสร้างตู้ Automation → <strong>จ้างน้องนิสิตไป "ยืนขาย"
+                                    ใต้หอมอเกษตรฯ</strong> (เอาน้ำยาใส่แกลลอนไปตั้ง)</li>
+                            <li>เพื่อดูว่าเด็กหอจะเอาขวดลงมาเติมจริงไหม? เติมกี่ ml?</li>
+                            <li><strong>Data ตรงนี้</strong> เอามาออกแบบตู้จริงให้จ่ายน้ำยาตรงพฤติกรรม</li>
+                        </ul>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>🍲 Incentive Strategy: "สุกี้ตี๋น้อย"</h4>
+                        <ul>
+                            <li>ต้องการ Data มหาศาล แต่เด็กขี้เกียจตอบแบบสอบถาม</li>
+                            <li>ลงทุนซื้อ <strong>บัตรสุกี้ตี๋น้อย</strong> (3,000 บาท) และ Starbucks
+                                มาจับฉลากแจกแลกกับการตอบแบบสอบถามและการดมกลิ่น (Blind Test)</li>
+                            <li>ได้คนตอบ <strong>~1,000 คน!</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>📸 Screenshots จริง</h4>
+                        <div class="case-gallery">
+                            <img src="/cases/Reinvent1.png" alt="RE-invent — Concept" loading="lazy"
+                                onclick="openLightbox(this)">
+                            <img src="/cases/Reinvent2.png" alt="RE-invent — Survey" loading="lazy"
+                                onclick="openLightbox(this)">
+                            <img src="/cases/Reinvent3.png" alt="RE-invent — Blind Test" loading="lazy"
+                                onclick="openLightbox(this)">
+                            <img src="/cases/Reinvent4.png" alt="RE-invent — Results" loading="lazy"
+                                onclick="openLightbox(this)">
+                        </div>
+                    </div>
+
+                    <div class="case-card__takeaway">
+                        <div class="case-card__takeaway-label">🎯 Key Takeaway</div>
+                        <p>"การลงทุนซื้อ Data (ค่าจ้างคน/ค่าของรางวัล) <strong>คุ้มค่ากว่า</strong>
+                            การลงทุนสร้างตู้ Machine ที่ไม่มีคนใช้"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case 3: Glurr -->
+        <section class="section container" style="padding-top:0;">
+            <div class="case-card">
+                <div class="case-card__header">
+                    <div class="case-card__emoji">💬</div>
+                    <span class="case-card__year">Web Platform</span>
+                    <h2 class="case-card__title">Glurr.com & <a href="https://glurrtalk.co/" target="_blank">Glurr
+                            Talk</a></h2>
+                    <div class="case-card__subtitle">"Pivot from Real Feedback"</div>
+                </div>
+                <div class="case-card__body">
+                    <div class="case-card__section">
+                        <h4>💻 Background — Glurr.com</h4>
+                        <ul>
+                            <li>เริ่มจาก <strong>Glurr.com</strong> (เว็บบอร์ด Anonymous) ที่ประสบความสำเร็จ</li>
+                            <li>นักศึกษาอยากคุยแบบไม่เปิดตัว → ดังมาก!</li>
+                            <li>ต่อยอดทำ <strong>Resume Builder</strong> → คนใช้กว่า 1,000 คน</li>
+                        </ul>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>🔄 The Trap — Glurr Talk</h4>
+                        <ul>
+                            <li>ต่อยอดทำ <strong>"Glurr Talk"</strong> (Platform จับคู่พี่มหาลัยสอนภาษาน้องมัธยม)
+                                โดยคิดไปเองว่า "พ่อแม่ต้องชอบ เพราะราคาถูกกว่าเรียนพิเศษ
+                                และได้ฝึก Conversation กับพี่ๆ"</li>
+                            <li>500+ ครู, เริ่ม 250 บ./ชม.</li>
+                        </ul>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>💡 The Failure & The Truth</h4>
+                        <ul>
+                            <li>พิมพ์ใบปลิวไปแจกหน้าโรงเรียนกวดวิชา (ตึกวรรณสรณ์) — <strong>เงียบกริบ
+                                    ไม่มีใครสนใจ</strong></li>
+                            <li>เดินไปสัมภาษณ์ <strong>ผู้ปกครอง</strong> (คนจ่ายเงินตัวจริง)</li>
+                            <li>พ่อแม่บอก: "จ่ายเพื่อ <strong>คะแนนสอบ (Exam)</strong> เพื่อให้ลูกสอบติด
+                                ไม่ได้จ่ายเพื่อ ทักษะการพูด (Conversation)"</li>
+                        </ul>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>🔄 The Pivot</h4>
+                        <ul>
+                            <li>ตัดสินใจ<strong>เปลี่ยนกลุ่มเป้าหมายทันที</strong> จาก "นักเรียน" ไปเป็น
+                                <strong>"คนวัยทำงาน"</strong> ที่ต้องการอัปเงินเดือน/ย้ายงาน
+                                ซึ่งต้องการทักษะการพูดจริงๆ
+                            </li>
+                            <li>→ <strong>ธุรกิจถึงไปรอด!</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="case-card__section">
+                        <h4>📸 Screenshots จริง</h4>
+                        <div class="case-gallery">
+                            <img src="/cases/Glurrtalk.png" alt="Glurr Talk — Platform" loading="lazy"
+                                onclick="openLightbox(this)">
+                            <img src="/cases/glurrtalk2.png" alt="Glurr Talk — Dashboard" loading="lazy"
+                                onclick="openLightbox(this)">
+                        </div>
+                    </div>
+
+                    <div class="case-card__takeaway">
+                        <div class="case-card__takeaway-label">🎯 Key Takeaway</div>
+                        <p>"ถ้าน้องไม่ลงไปคุยกับ <strong>ลูกค้า</strong> น้องจะสร้างของที่ <strong>ไม่มีใครเอา</strong>
+                            (Build what nobody wants) — Data จาก field สำคัญกว่า assumption ที่เราเชื่อ"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img src="" alt="Full size" id="lightboxImg">
+    </div>
+
+    <script type="module">
+        import { createNav, createFooter } from '/js/components.js';
+        createNav('cases');
+        createFooter();
+    </script>
+    <script>
+        function openLightbox(img) {
+            document.getElementById('lightboxImg').src = img.src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+    </script>
+</body>
+
+</html>

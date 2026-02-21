@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Dashboard — POCKit</title>
+    <meta name="description" content="ดูข้อมูลทุกทีม real-time — สำหรับ Mentor">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: all var(--transition-base);
+        }
+
+        .team-card:hover {
+            border-color: var(--border-gold);
+        }
+
+        .team-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .team-card__name {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .team-card__status {
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status--pending {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+        }
+
+        .status--working {
+            background: rgba(249, 115, 22, 0.15);
+            color: var(--orange);
+        }
+
+        .status--done {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green);
+        }
+
+        .team-card__field {
+            margin-bottom: 12px;
+        }
+
+        .team-card__label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .team-card__value {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .team-card__check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .add-team-card {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            min-height: 200px;
+        }
+
+        .add-team-card:hover {
+            border-color: var(--gold);
+            background: rgba(240, 185, 11, 0.03);
+        }
+
+        .stats-row {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card__number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-card__label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="section container">
+            <div class="hero__badge">📊 Team Dashboard</div>
+            <h1 style="font-size:2rem;font-weight:900;margin-bottom:8px;">Team Dashboard</h1>
+            <p style="color:var(--text-secondary);margin-bottom:32px;">ดูภาพรวมทุกทีม — สำหรับ Mentor
+                ใช้ระหว่างเดินถามรายทีม</p>
+
+            <!-- Stats Overview -->
+            <div class="stats-row" id="statsRow">
+                <div class="stat-card">
+                    <div class="stat-card__number" id="totalTeams">0</div>
+                    <div class="stat-card__label">จำนวนทีม</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__number" id="psComplete">0</div>
+                    <div class="stat-card__label">Problem Statement ✅</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__number" id="protoStatus">0</div>
+                    <div class="stat-card__label">มี Prototype แล้ว</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__number" id="testDone">0</div>
+                    <div class="stat-card__label">ทดสอบแล้ว</div>
+                </div>
+            </div>
+
+            <!-- Team Cards -->
+            <div class="dashboard-grid" id="dashboardGrid">
+                <div class="add-team-card" id="addTeamBtn">
+                    <div style="font-size:2.5rem;margin-bottom:8px;">➕</div>
+                    <div style="font-weight:600;color:var(--text-secondary);">เพิ่มทีม</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add/Edit Team Modal -->
+    <div class="modal-overlay" id="teamModal"
+        style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;pointer-events:none;transition:opacity 0.3s;">
+        <div
+            style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;">
+            <h3 style="margin-bottom:20px;font-weight:700;" id="modalTitle">เพิ่มทีม</h3>
+            <div class="form-group">
+                <label class="form-label">ชื่อทีม</label>
+                <input type="text" class="form-input" id="mTeamName">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Problem Statement</label>
+                <textarea class="form-textarea" id="mProblem"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Core Solution</label>
+                <textarea class="form-textarea" id="mSolution" style="min-height:60px;"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">เทคนิคที่เลือก</label>
+                <select class="form-select" id="mTechnique">
+                    <option value="">— ยังไม่เลือก —</option>
+                    <option value="wizard">🎩 Wizard of Oz</option>
+                    <option value="concierge">🤝 Concierge</option>
+                    <option value="fakedoor">🚪 Fake Door</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">สถานะ Prototype</label>
+                <select class="form-select" id="mStatus">
+                    <option value="pending">⏳ ยังไม่เริ่ม</option>
+                    <option value="working">🔨 กำลังทำ</option>
+                    <option value="done">✅ เสร็จ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mentor Notes</label>
+                <textarea class="form-textarea" id="mNotes" placeholder="จดโน้ตส่วนตัว..."></textarea>
+            </div>
+            <div style="display:flex;gap:12px;">
+                <button class="btn btn--primary" style="flex:1;" id="saveTeamBtn">💾 บันทึก</button>
+                <button class="btn btn--secondary" id="cancelTeamBtn">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createNav, createFooter } from '/js/components.js';
+        createNav('dashboard');
+        createFooter();
+
+        let teams = JSON.parse(localStorage.getItem('pockit_teams') || '[]');
+        let editIdx = -1;
+
+        function saveTeams() {
+            localStorage.setItem('pockit_teams', JSON.stringify(teams));
+        }
+
+        function renderTeams() {
+            const grid = document.getElementById('dashboardGrid');
+            const addBtn = document.getElementById('addTeamBtn');
+
+            // Remove existing team cards
+            grid.querySelectorAll('.team-card').forEach(c => c.remove());
+
+            teams.forEach((team, i) => {
+                const statusClass = team.status === 'done' ? 'status--done' : team.status === 'working' ? 'status--working' : 'status--pending';
+                const statusLabel = team.status === 'done' ? '✅ เสร็จ' : team.status === 'working' ? '🔨 กำลังทำ' : '⏳ รอ';
+                const techniqueLabel = team.technique === 'wizard' ? '🎩 Wizard of Oz' : team.technique === 'concierge' ? '🤝 Concierge' : team.technique === 'fakedoor' ? '🚪 Fake Door' : '—';
+
+                const card = document.createElement('div');
+                card.className = 'team-card';
+                card.innerHTML = `
+          <div class="team-card__header">
+            <div class="team-card__name">${team.name || 'ทีม ' + (i + 1)}</div>
+            <span class="team-card__status ${statusClass}">${statusLabel}</span>
+          </div>
+          <div class="team-card__field">
+            <div class="team-card__label">Problem Statement</div>
+            <div class="team-card__value">${team.problem || '—'}</div>
+          </div>
+          <div class="team-card__field">
+            <div class="team-card__label">Core Solution</div>
+            <div class="team-card__value">${team.solution || '—'}</div>
+          </div>
+          <div class="team-card__field">
+            <div class="team-card__label">เทคนิค</div>
+            <div class="team-card__value">${techniqueLabel}</div>
+          </div>
+          ${team.notes ? `<div class="team-card__field"><div class="team-card__label">Notes</div><div class="team-card__value">${team.notes}</div></div>` : ''}
+          <div style="display:flex;gap:8px;margin-top:16px;">
+            <button class="btn btn--outline" style="flex:1;padding:8px;" data-edit="${i}">✏️ แก้ไข</button>
+            <button class="btn btn--secondary" style="padding:8px;" data-delete="${i}">🗑️</button>
+          </div>
+        `;
+                grid.insertBefore(card, addBtn);
+            });
+
+            // Update stats
+            document.getElementById('totalTeams').textContent = teams.length;
+            document.getElementById('psComplete').textContent = teams.filter(t => t.problem).length;
+            document.getElementById('protoStatus').textContent = teams.filter(t => t.status === 'done').length;
+            document.getElementById('testDone').textContent = teams.filter(t => t.technique).length;
+
+            // Attach event listeners
+            grid.querySelectorAll('[data-edit]').forEach(btn => {
+                btn.addEventListener('click', () => openEditModal(parseInt(btn.dataset.edit)));
+            });
+            grid.querySelectorAll('[data-delete]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (confirm('ลบทีมนี้?')) {
+                        teams.splice(parseInt(btn.dataset.delete), 1);
+                        saveTeams();
+                        renderTeams();
+                    }
+                });
+            });
+        }
+
+        function openModal() {
+            document.getElementById('teamModal').style.opacity = '1';
+            document.getElementById('teamModal').style.pointerEvents = 'auto';
+        }
+
+        function closeModal() {
+            document.getElementById('teamModal').style.opacity = '0';
+            document.getElementById('teamModal').style.pointerEvents = 'none';
+        }
+
+        function openEditModal(idx) {
+            editIdx = idx;
+            const team = teams[idx];
+            document.getElementById('modalTitle').textContent = 'แก้ไข: ' + team.name;
+            document.getElementById('mTeamName').value = team.name || '';
+            document.getElementById('mProblem').value = team.problem || '';
+            document.getElementById('mSolution').value = team.solution || '';
+            document.getElementById('mTechnique').value = team.technique || '';
+            document.getElementById('mStatus').value = team.status || 'pending';
+            document.getElementById('mNotes').value = team.notes || '';
+            openModal();
+        }
+
+        document.getElementById('addTeamBtn').addEventListener('click', () => {
+            editIdx = -1;
+            document.getElementById('modalTitle').textContent = 'เพิ่มทีม';
+            document.getElementById('mTeamName').value = '';
+            document.getElementById('mProblem').value = '';
+            document.getElementById('mSolution').value = '';
+            document.getElementById('mTechnique').value = '';
+            document.getElementById('mStatus').value = 'pending';
+            document.getElementById('mNotes').value = '';
+            openModal();
+        });
+
+        document.getElementById('saveTeamBtn').addEventListener('click', () => {
+            const data = {
+                name: document.getElementById('mTeamName').value,
+                problem: document.getElementById('mProblem').value,
+                solution: document.getElementById('mSolution').value,
+                technique: document.getElementById('mTechnique').value,
+                status: document.getElementById('mStatus').value,
+                notes: document.getElementById('mNotes').value,
+            };
+            if (editIdx >= 0) {
+                teams[editIdx] = data;
+            } else {
+                teams.push(data);
+            }
+            saveTeams();
+            renderTeams();
+            closeModal();
+        });
+
+        document.getElementById('cancelTeamBtn').addEventListener('click', closeModal);
+        document.getElementById('teamModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        renderTeams();
+    </script>
+</body>
+
+</html>

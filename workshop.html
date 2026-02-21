@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Templates — POCKit</title>
+    <meta name="description" content="Template A: Problem Statement + Template B: Hunt the Risk — ทีมกรอกบนมือถือได้">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .workshop-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .example-box {
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .example-bad {
+            background: rgba(239, 68, 68, 0.06);
+            border-left: 3px solid var(--red);
+        }
+
+        .example-good {
+            background: rgba(16, 185, 129, 0.06);
+            border-left: 3px solid var(--green);
+        }
+
+        .generated-statement {
+            background: rgba(240, 185, 11, 0.08);
+            border: 2px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold);
+            min-height: 60px;
+            margin-top: 24px;
+        }
+
+        .template-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .template-selector button {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="section container">
+            <div class="workshop-container">
+                <div class="hero__badge">📝 Workshop Templates</div>
+                <h1 style="font-size:2rem;font-weight:900;margin-bottom:12px;">Workshop Templates</h1>
+                <p style="color:var(--text-secondary);margin-bottom:32px;">เลือก Template แล้วกรอกบนมือถือได้เลย</p>
+
+                <div class="template-selector">
+                    <button class="btn btn--primary" id="tabA" onclick="showTemplate('A')">📝 Template A — Problem
+                        Statement</button>
+                    <button class="btn btn--secondary" id="tabB" onclick="showTemplate('B')">🔍 Template B — Hunt the
+                        Risk</button>
+                </div>
+
+                <!-- Template A: Problem Statement -->
+                <div id="templateA">
+                    <div class="card">
+                        <h3 style="margin-bottom:8px;font-weight:700;">📝 Template A — Problem Statement</h3>
+                        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:24px;">เขียน Problem
+                            Statement ให้ชัดใน 1 ประโยค</p>
+
+                        <div class="form-group">
+                            <label class="form-label">ชื่อทีม</label>
+                            <input type="text" class="form-input" id="teamNameA" placeholder="เช่น Team Alpha">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">1. กลุ่มเป้าหมายคือใคร? <span class="form-label__hint">(เจาะจง —
+                                    คนคนเดียว)</span></label>
+                            <input type="text" class="form-input" id="psUser"
+                                placeholder="เช่น นักศึกษาหอพักชั้นปี 1 ม.เกษตร">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">2. ปัญหาคืออะไร? <span class="form-label__hint">(Pain Point
+                                    หลัก)</span></label>
+                            <input type="text" class="form-input" id="psPain" placeholder="เช่น กินข้าวไม่ตรงเวลา">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">3. เพราะอะไร? (Root Cause) <span class="form-label__hint">ลอง 5
+                                    Whys ดู</span></label>
+                            <textarea class="form-textarea" id="psCause"
+                                placeholder="เช่น เพราะร้านอาหารในมอปิดก่อน 2 ทุ่ม แต่เลิกเรียน 4 ทุ่ม"></textarea>
+                        </div>
+
+                        <!-- Example -->
+                        <div style="margin:24px 0;">
+                            <div style="font-weight:600;margin-bottom:8px;font-size:0.85rem;color:var(--text-muted);">
+                                ตัวอย่าง:</div>
+                            <div class="example-box example-bad">
+                                ❌ "คนไทยมีปัญหาสุขภาพ" → กว้างเกินไป ไม่รู้จะทำอะไร
+                            </div>
+                            <div class="example-box example-good">
+                                ✅ "นักศึกษาหอพักกินข้าวไม่ตรงเวลาเพราะร้านอาหารปิดก่อน 2 ทุ่ม"
+                            </div>
+                        </div>
+
+                        <!-- Generated Statement -->
+                        <div class="generated-statement" id="generatedPS">
+                            — กรอกข้อมูลด้านบน จะสร้าง Problem Statement ให้อัตโนมัติ —
+                        </div>
+
+                        <div style="margin-top:24px;">
+                            <h4 style="margin-bottom:16px;">🔬 3 คำถาม Validation</h4>
+
+                            <div class="form-group">
+                                <label class="form-label">Q1: เราทำสิ่งนี้แบบ lean ๆ ได้จริงไหม? ทำยังไง?</label>
+                                <textarea class="form-textarea" id="q1"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Q2: เราจะพิสูจน์อะไรจาก prototype นี้?</label>
+                                <textarea class="form-textarea" id="q2"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Q3: Feature เดียวที่ขาดไม่ได้คืออะไร?</label>
+                                <textarea class="form-textarea" id="q3"></textarea>
+                            </div>
+                        </div>
+
+                        <button class="btn btn--primary"
+                            style="width:100%;margin-top:24px;padding:16px;font-size:1.1rem;"
+                            onclick="submitTemplateA()">
+                            📤 ส่งคำตอบ Template A
+                        </button>
+                        <div id="submitSuccessA" class="hidden"
+                            style="margin-top:16px;padding:16px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-md);text-align:center;color:var(--green);font-weight:600;">
+                            ✅ ส่งคำตอบเรียบร้อยแล้ว!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Template B: Hunt the Risk -->
+                <div id="templateB" class="hidden">
+                    <div class="card">
+                        <h3 style="margin-bottom:8px;font-weight:700;">🔍 Template B — Hunt the Risk</h3>
+                        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:24px;">ระบุความเสี่ยงหลัก +
+                            เลือกเทคนิค + วางแผนทดสอบ</p>
+
+                        <div class="form-group">
+                            <label class="form-label">ชื่อทีม</label>
+                            <input type="text" class="form-input" id="teamNameB" placeholder="เช่น Team Alpha">
+                        </div>
+
+                        <h4 style="margin:24px 0 16px;">📌 Assignment 1: ความเสี่ยงหลัก</h4>
+
+                        <div class="form-group">
+                            <label class="form-label">ความเสี่ยงเดียวที่ยิ่งใหญ่ที่สุดของ idea น้องคืออะไร?</label>
+                            <textarea class="form-textarea" id="riskMain"
+                                placeholder="เช่น ไม่แน่ใจว่าเด็กหอจะซื้อน้ำยาซักผ้าจากตู้จริงๆ ไหม"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">เลือกเทคนิคที่จะใช้ทดสอบ</label>
+                            <div style="display:grid;gap:12px;margin-top:8px;">
+                                <label class="card"
+                                    style="padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;">
+                                    <input type="checkbox" name="technique" value="wizard" style="margin-top:4px;">
+                                    <div>
+                                        <div style="font-weight:700;">🎩 Wizard of Oz</div>
+                                        <div style="color:var(--text-secondary);font-size:0.85rem;">ดูเหมือนอัตโนมัติ
+                                            แต่คนทำเองข้างหลัง (เช่น Santabox)</div>
+                                    </div>
+                                </label>
+                                <label class="card"
+                                    style="padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;">
+                                    <input type="checkbox" name="technique" value="concierge" style="margin-top:4px;">
+                                    <div>
+                                        <div style="font-weight:700;">🤝 Concierge</div>
+                                        <div style="color:var(--text-secondary);font-size:0.85rem;">ให้บริการแบบ 1-on-1
+                                            ด้วยคนจริง (เช่น RE-invent)</div>
+                                    </div>
+                                </label>
+                                <label class="card"
+                                    style="padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;">
+                                    <input type="checkbox" name="technique" value="fakedoor" style="margin-top:4px;">
+                                    <div>
+                                        <div style="font-weight:700;">🚪 Fake Door</div>
+                                        <div style="color:var(--text-secondary);font-size:0.85rem;">
+                                            สร้างหน้าเว็บ/ปุ่มวัด demand ก่อนสร้างจริง</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">แผนทดสอบ 24 ชั่วโมง <span class="form-label__hint">— ถ้ามีเวลาแค่
+                                    24 ชม. จะทดสอบอะไร? ยังไง?</span></label>
+                            <textarea class="form-textarea" id="testPlan"
+                                placeholder="เช่น พรุ่งนี้จะเอาแกลลอนน้ำยาไปตั้งขายใต้หอ 6 ดูว่ามีคนซื้อกี่คน..."></textarea>
+                        </div>
+
+                        <h4 style="margin:24px 0 16px;">📌 Assignment 2: Paper Sketch</h4>
+                        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px;">วาด wireframe/sketch
+                            ของ prototype บนกระดาษ แล้วถ่ายรูปอัพโหลด</p>
+                        <div class="form-group">
+                            <input type="file" accept="image/*" class="form-input" id="sketchUpload">
+                            <div id="sketchPreview" style="margin-top:16px;"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">💰 Unit Economics <span
+                                    class="form-label__hint">(เสริม)</span></label>
+                            <input type="text" class="form-input" id="unitEcon"
+                                placeholder="ราคาขาย - ต้นทุน = กำไร/ขาดทุน ต่อ 1 ชิ้น">
+                        </div>
+
+                        <button class="btn btn--primary"
+                            style="width:100%;margin-top:24px;padding:16px;font-size:1.1rem;"
+                            onclick="submitTemplateB()">
+                            📤 ส่งคำตอบ Template B
+                        </button>
+                        <div id="submitSuccessB" class="hidden"
+                            style="margin-top:16px;padding:16px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-md);text-align:center;color:var(--green);font-weight:600;">
+                            ✅ ส่งคำตอบเรียบร้อยแล้ว!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { createNav, createFooter } from '/js/components.js';
+        createNav('workshop');
+        createFooter();
+
+        // Auto-generate Problem Statement
+        const psFields = ['psUser', 'psPain', 'psCause'];
+        psFields.forEach(id => {
+            document.getElementById(id)?.addEventListener('input', updatePS);
+        });
+
+        function updatePS() {
+            const user = document.getElementById('psUser').value;
+            const pain = document.getElementById('psPain').value;
+            const cause = document.getElementById('psCause').value;
+
+            if (user || pain || cause) {
+                document.getElementById('generatedPS').innerHTML =
+                    `"<strong>${user || '[กลุ่มเป้าหมาย]'}</strong> มีปัญหา <strong>${pain || '[อะไร]'}</strong> เพราะ <strong>${cause || '[สาเหตุ]'}</strong>"`;
+            } else {
+                document.getElementById('generatedPS').textContent = '— กรอกข้อมูลด้านบน จะสร้าง Problem Statement ให้อัตโนมัติ —';
+            }
+        }
+
+        // Sketch upload preview
+        document.getElementById('sketchUpload')?.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    document.getElementById('sketchPreview').innerHTML = `
+            <img src="${ev.target.result}" style="max-width:100%;border-radius:var(--radius-md);border:1px solid var(--border);" alt="Sketch">
+          `;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Template switching
+        window.showTemplate = function (tab) {
+            document.getElementById('templateA').classList.toggle('hidden', tab !== 'A');
+            document.getElementById('templateB').classList.toggle('hidden', tab !== 'B');
+            document.getElementById('tabA').className = tab === 'A' ? 'btn btn--primary' : 'btn btn--secondary';
+            document.getElementById('tabB').className = tab === 'B' ? 'btn btn--primary' : 'btn btn--secondary';
+        };
+
+        window.submitTemplateA = function () {
+            const user = document.getElementById('psUser').value;
+            const pain = document.getElementById('psPain').value;
+            const cause = document.getElementById('psCause').value;
+            if (!user || !pain || !cause) {
+                alert('กรุณากรอกข้อมูลให้ครบก่อนส่ง (กลุ่มเป้าหมาย, ปัญหา, สาเหตุ)');
+                return;
+            }
+            document.getElementById('submitSuccessA').classList.remove('hidden');
+            document.getElementById('submitSuccessA').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.submitTemplateB = function () {
+            const team = document.getElementById('teamNameB').value;
+            const risk = document.getElementById('riskMain').value;
+            const techniques = [...document.querySelectorAll('input[name=technique]:checked')].map(el => el.value);
+            if (!team || !risk || techniques.length === 0) {
+                alert('กรุณากรอกชื่อทีม, ความเสี่ยง, และเลือกเทคนิคอย่างน้อย 1 อัน');
+                return;
+            }
+            document.getElementById('submitSuccessB').classList.remove('hidden');
+            document.getElementById('submitSuccessB').scrollIntoView({ behavior: 'smooth' });
+        };
+    </script>
+</body>
+
+</html>

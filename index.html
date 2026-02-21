@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POCKit — Startup Toolkit | KU Startup Hackathon</title>
+  <meta name="description" content="ชุดเครื่องมือสอน POC สำหรับ KU Startup Engineering Hackathon — Design Thinking, POC vs MVP, AI Tools, Workshop">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="main">
+    <!-- Hero -->
+    <section class="hero container">
+      <div class="hero__badge">KU Startup Engineering Hackathon 2026</div>
+      <h1 class="hero__title">
+        <span class="highlight">POCKit</span><br>
+        Startup Toolkit
+      </h1>
+      <p class="hero__subtitle">
+        ชุดเครื่องมือสำหรับเรียนรู้การทำ Proof of Concept<br>
+        ที่พกไปได้เหมือนอยู่ใน Pocket 🚀
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="/slides.html" class="btn btn--primary btn--large">🎞️ เปิดสไลด์</a>
+        <a href="/playbook.html" class="btn btn--secondary btn--large">📖 อ่าน Playbook</a>
+      </div>
+    </section>
+
+    <!-- Session Timer -->
+    <section class="section container" id="timer-section">
+      <div class="text-center mb-8">
+        <h2 style="font-size:1.5rem;font-weight:700;">⏱️ Session Timer</h2>
+        <p class="text-muted">เสาร์ 21 ก.พ. 2026 | 12:00-16:00 | ห้อง 10301</p>
+      </div>
+      <div class="timer timer--huge" id="mainTimer">
+        <span id="timerDisplay">00:00</span>
+      </div>
+      <div class="text-center mt-4">
+        <span class="timer__label" id="timerLabel">กำลังรอเริ่ม Session</span>
+      </div>
+      <div class="text-center mt-8" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn--primary" id="timerStart">▶ เริ่ม</button>
+        <button class="btn btn--secondary" id="timerPause">⏸ พัก</button>
+        <button class="btn btn--secondary" id="timerReset">↻ รีเซ็ต</button>
+      </div>
+    </section>
+
+    <!-- Agenda -->
+    <section class="section container">
+      <h2 class="text-center" style="font-size:1.5rem;font-weight:700;margin-bottom:32px;">📋 Agenda</h2>
+      <div class="card" style="overflow-x:auto;">
+        <table class="agenda">
+          <thead>
+            <tr>
+              <th>เวลา</th>
+              <th>Section</th>
+              <th>รูปแบบ</th>
+              <th>Timer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-duration="10">
+              <td class="agenda__time">12:00-12:10</td>
+              <td>
+                <div class="agenda__section">🎤 Opening</div>
+                <div class="agenda__desc">30-Second Challenge — ทีมอธิบายตัวเองใน 30 วิ</div>
+              </td>
+              <td><span class="tag tag--gold">Interactive</span></td>
+              <td><button class="btn btn--outline" data-timer="10" onclick="startSectionTimer(10)">10 นาที</button></td>
+            </tr>
+            <tr data-duration="30">
+              <td class="agenda__time">12:10-12:40</td>
+              <td>
+                <div class="agenda__section">📐 Section 1 — ตอนนี้เราอยู่ตรงไหน?</div>
+                <div class="agenda__desc">Design Thinking Process + ทีมอยู่ขั้นไหน</div>
+              </td>
+              <td><span class="tag">Talk</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(30)">30 นาที</button></td>
+            </tr>
+            <tr data-duration="40">
+              <td class="agenda__time">12:40-13:20</td>
+              <td>
+                <div class="agenda__section">💡 Section 2 — POC vs MVP + Case Studies</div>
+                <div class="agenda__desc">3 Cases จริง: Santabox, RE-invent, Glurr</div>
+              </td>
+              <td><span class="tag tag--blue">Talk + Story</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(40)">40 นาที</button></td>
+            </tr>
+            <tr data-duration="20">
+              <td class="agenda__time">13:20-13:40</td>
+              <td>
+                <div class="agenda__section">📝 Workshop 1 — 3 คำถาม + Problem Statement</div>
+                <div class="agenda__desc">ทีมตอบ 3 คำถาม + เขียน Problem Statement</div>
+              </td>
+              <td><span class="tag tag--green">ทีมทำ</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(20)">20 นาที</button></td>
+            </tr>
+            <tr data-duration="10">
+              <td class="agenda__time">13:40-13:50</td>
+              <td>
+                <div class="agenda__section">☕ Break</div>
+                <div class="agenda__desc">พักเบรก</div>
+              </td>
+              <td><span class="tag">—</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(10)">10 นาที</button></td>
+            </tr>
+            <tr data-duration="30">
+              <td class="agenda__time">13:50-14:20</td>
+              <td>
+                <div class="agenda__section">🤖 Section 3 — AI Tools + Live Demo</div>
+                <div class="agenda__desc">Lovable, v0, Figma AI, ChatGPT, Antigravity</div>
+              </td>
+              <td><span class="tag tag--gold">Demo สด</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(30)">30 นาที</button></td>
+            </tr>
+            <tr data-duration="60">
+              <td class="agenda__time">14:20-15:20</td>
+              <td>
+                <div class="agenda__section">🛠️ Workshop 2 — Build!</div>
+                <div class="agenda__desc">30 นาทีแรก build + 30 นาทีหลัง เดินถามรายทีม</div>
+              </td>
+              <td><span class="tag tag--green">Hands-on</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(60)">60 นาที</button></td>
+            </tr>
+            <tr data-duration="30">
+              <td class="agenda__time">15:20-15:50</td>
+              <td>
+                <div class="agenda__section">🏆 Showcase & Wrap-up</div>
+                <div class="agenda__desc">สุ่มทีมโชว์ + Financial Hook + เปรียบเทียบก่อน/หลัง</div>
+              </td>
+              <td><span class="tag tag--gold">Team Present</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(30)">30 นาที</button></td>
+            </tr>
+            <tr data-duration="10">
+              <td class="agenda__time">15:50-16:00</td>
+              <td>
+                <div class="agenda__section">🎬 Closing</div>
+                <div class="agenda__desc">สรุป + Next Steps + Q&A</div>
+              </td>
+              <td><span class="tag">Talk</span></td>
+              <td><button class="btn btn--outline" onclick="startSectionTimer(10)">10 นาที</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="section container">
+      <h2 class="text-center" style="font-size:1.5rem;font-weight:700;margin-bottom:32px;">🧰 เครื่องมือทั้งหมด</h2>
+      <div class="grid grid--3">
+        <a href="/playbook.html" class="card" style="text-decoration:none;">
+          <div class="card__icon">📖</div>
+          <div class="card__title">Playbook</div>
+          <div class="card__desc">Design Thinking, POC vs MVP, Fail Fast, 5 Whys — อ่านได้ตลอดหลังงาน</div>
+        </a>
+        <a href="/cases.html" class="card" style="text-decoration:none;">
+          <div class="card__icon">📚</div>
+          <div class="card__title">Case Studies</div>
+          <div class="card__desc">Santabox, RE-invent, Glurr — 3 เคสจริงจากรุ่นพี่</div>
+        </a>
+        <a href="/30sec-test.html" class="card" style="text-decoration:none;">
+          <div class="card__icon">🎯</div>
+          <div class="card__title">30-Second Test</div>
+          <div class="card__desc">Countdown 30 วิ + Voting — วัดว่าคนเข้าใจ prototype ไหม</div>
+        </a>
+        <a href="/fake-door.html" class="card" style="text-decoration:none;">
+          <div class="card__icon">🚪</div>
+          <div class="card__title">Fake Door Generator</div>
+          <div class="card__desc">กรอก 4 ช่อง → ได้ Landing Page — ทดสอบ demand จริง</div>
+        </a>
+        <a href="/workshop.html" class="card" style="text-decoration:none;">
+          <div class="card__icon">📝</div>
+          <div class="card__title">Workshop Templates</div>
+          <div class="card__desc">Problem Statement + Hunt the Risk — ทีมกรอกบนมือถือ</div>
+        </a>
+        <a href="/dashboard.html" class="card" style="text-decoration:none;">
+          <div class="card__icon">📊</div>
+          <div class="card__title">Team Dashboard</div>
+          <div class="card__desc">ดูข้อมูลทุกทีม real-time — เห็นภาพรวมทั้งงาน</div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { createNav, createFooter } from '/js/components.js';
+    createNav('home');
+    createFooter();
+
+    // ── Timer Logic ──
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let timerRunning = false;
+
+    const display = document.getElementById('timerDisplay');
+    const label = document.getElementById('timerLabel');
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateTimer() {
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        display.textContent = '00:00';
+        display.style.color = '#ef4444';
+        label.textContent = '⏰ หมดเวลา!';
+        // Play sound
+        try {
+          const ctx = new AudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain).connect(ctx.destination);
+          osc.frequency.value = 800;
+          gain.gain.value = 0.3;
+          osc.start();
+          setTimeout(() => { osc.stop(); ctx.close(); }, 500);
+        } catch(e) {}
+        return;
+      }
+      timerSeconds--;
+      display.textContent = formatTime(timerSeconds);
+      display.style.color = timerSeconds <= 30 ? '#ef4444' : '#f0b90b';
+    }
+
+    window.startSectionTimer = function(minutes) {
+      clearInterval(timerInterval);
+      timerSeconds = minutes * 60;
+      display.textContent = formatTime(timerSeconds);
+      display.style.color = '#f0b90b';
+      label.textContent = `⏱️ ${minutes} นาที — กำลังนับถอยหลัง`;
+      timerRunning = true;
+      timerInterval = setInterval(updateTimer, 1000);
+
+      // Scroll to timer
+      document.getElementById('timer-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('timerStart').addEventListener('click', () => {
+      if (!timerRunning && timerSeconds > 0) {
+        timerRunning = true;
+        label.textContent = '⏱️ กำลังนับถอยหลัง';
+        timerInterval = setInterval(updateTimer, 1000);
+      } else if (timerSeconds === 0) {
+        // Default 10 min
+        window.startSectionTimer(10);
+      }
+    });
+
+    document.getElementById('timerPause').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      label.textContent = '⏸️ หยุดชั่วคราว';
+    });
+
+    document.getElementById('timerReset').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 0;
+      display.textContent = '00:00';
+      display.style.color = '#f0b90b';
+      label.textContent = 'กำลังรอเริ่ม Session';
+    });
+  </script>
+</body>
+</html>

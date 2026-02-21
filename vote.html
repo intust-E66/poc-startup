@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โหวต — POCKit</title>
+    <meta name="description" content="โหวต 30-Second Test — เข้าใจไหม?">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .vote-page {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 24px 16px;
+        }
+
+        .vote-team-name {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin: 16px 0;
+        }
+
+        .vote-question {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .vote-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .vote-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 32px 24px;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .vote-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .vote-btn--yes {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.06);
+        }
+
+        .vote-btn--yes:hover,
+        .vote-btn--yes.selected {
+            border-color: var(--green);
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .vote-btn--no {
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        .vote-btn--no:hover,
+        .vote-btn--no.selected {
+            border-color: var(--red);
+            background: rgba(239, 68, 68, 0.15);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
+        }
+
+        .vote-btn__emoji {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+
+        .vote-btn__label {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .vote-success {
+            display: none;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .vote-success.active {
+            display: block;
+        }
+
+        .vote-success__emoji {
+            font-size: 4rem;
+        }
+
+        .vote-waiting {
+            padding: 48px 24px;
+            text-align: center;
+        }
+
+        .vote-waiting__emoji {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="section container">
+            <!-- Waiting state (when no team is active) -->
+            <div class="vote-page" id="waitingState">
+                <div class="vote-waiting">
+                    <div class="vote-waiting__emoji">⏳</div>
+                    <h2 style="font-weight:800;margin-bottom:8px;">รอทีมถัดไป...</h2>
+                    <p style="color:var(--text-secondary);">พี่อินทัธจะเปิดให้โหวตเมื่อทีมนำเสนอเสร็จ</p>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:16px;">หน้านี้จะอัปเดตอัตโนมัติ</p>
+                </div>
+            </div>
+
+            <!-- Voting state -->
+            <div class="vote-page hidden" id="votingState">
+                <div class="hero__badge">🎯 30-Second Test</div>
+                <div class="vote-team-name" id="voteTeamDisplay">Team Alpha</div>
+                <div class="vote-question">ทีมนี้อธิบาย prototype ได้รู้เรื่องไหม?</div>
+
+                <div class="vote-buttons" id="voteButtons">
+                    <button class="vote-btn vote-btn--yes" onclick="castVote('yes')">
+                        <div class="vote-btn__emoji">✅</div>
+                        <div class="vote-btn__label">เข้าใจ!</div>
+                    </button>
+                    <button class="vote-btn vote-btn--no" onclick="castVote('no')">
+                        <div class="vote-btn__emoji">😵</div>
+                        <div class="vote-btn__label">ยังงง</div>
+                    </button>
+                </div>
+
+                <div class="vote-success" id="voteSuccess">
+                    <div class="vote-success__emoji">🙏</div>
+                    <h2 style="font-weight:800;margin:16px 0 8px;">ขอบคุณ!</h2>
+                    <p style="color:var(--text-secondary);">โหวตของคุณถูกบันทึกแล้ว</p>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:16px;">รอทีมถัดไป...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { createNav, createFooter } from '/js/components.js';
+        createNav('');
+        createFooter();
+    </script>
+    <script>
+        // Get team from URL params
+        const params = new URLSearchParams(window.location.search);
+        const teamParam = params.get('team');
+
+        // LocalStorage key for tracking votes
+        const VOTE_KEY = 'pockit_votes';
+        const VOTED_KEY = 'pockit_voted_teams';
+
+        function getVotes() {
+            try { return JSON.parse(localStorage.getItem(VOTE_KEY) || '{}'); } catch { return {}; }
+        }
+
+        function saveVote(team, vote) {
+            const votes = getVotes();
+            if (!votes[team]) votes[team] = { yes: 0, no: 0 };
+            votes[team][vote]++;
+            localStorage.setItem(VOTE_KEY, JSON.stringify(votes));
+
+            // Track which teams this device voted for
+            const voted = getVotedTeams();
+            voted.push(team);
+            localStorage.setItem(VOTED_KEY, JSON.stringify(voted));
+        }
+
+        function getVotedTeams() {
+            try { return JSON.parse(localStorage.getItem(VOTED_KEY) || '[]'); } catch { return []; }
+        }
+
+        function hasVoted(team) {
+            return getVotedTeams().includes(team);
+        }
+
+        // Check if there's an active team to vote for
+        function checkActiveTeam() {
+            const activeTeam = localStorage.getItem('pockit_active_team');
+            if (activeTeam && !hasVoted(activeTeam)) {
+                document.getElementById('waitingState').classList.add('hidden');
+                document.getElementById('votingState').classList.remove('hidden');
+                document.getElementById('voteTeamDisplay').textContent = activeTeam;
+                document.getElementById('voteButtons').style.display = '';
+                document.getElementById('voteSuccess').classList.remove('active');
+            } else if (activeTeam && hasVoted(activeTeam)) {
+                document.getElementById('waitingState').classList.add('hidden');
+                document.getElementById('votingState').classList.remove('hidden');
+                document.getElementById('voteTeamDisplay').textContent = activeTeam;
+                document.getElementById('voteButtons').style.display = 'none';
+                document.getElementById('voteSuccess').classList.add('active');
+            } else {
+                document.getElementById('waitingState').classList.remove('hidden');
+                document.getElementById('votingState').classList.add('hidden');
+            }
+        }
+
+        // Cast vote
+        window.castVote = function (vote) {
+            const team = document.getElementById('voteTeamDisplay').textContent;
+            saveVote(team, vote);
+
+            // Show success
+            document.getElementById('voteButtons').style.display = 'none';
+            document.getElementById('voteSuccess').classList.add('active');
+
+            // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate(100);
+        };
+
+        // Initial check
+        checkActiveTeam();
+
+        // Poll for updates every 2 seconds
+        setInterval(checkActiveTeam, 2000);
+    </script>
+</body>
+
+</html>

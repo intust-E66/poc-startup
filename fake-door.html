@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Door Generator — POCKit</title>
+    <meta name="description" content="สร้าง Landing Page ทดสอบ demand — กรอก 4 ช่อง ได้ Fake Door ทันที">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .generator {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .preview {
+            max-width: 600px;
+            margin: 40px auto 0;
+        }
+
+        .landing-preview {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .landing-preview__hero {
+            padding: 60px 32px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(240, 185, 11, 0.08) 0%, transparent 100%);
+        }
+
+        .landing-preview__product {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .landing-preview__tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .landing-preview__price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+
+        .landing-preview__cta {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0a0e1a;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            border: none;
+            font-family: var(--font-sans);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .landing-preview__cta:hover {
+            transform: translateY(-2px);
+        }
+
+        .landing-preview__stats {
+            padding: 16px 32px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Coming Soon Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-xl);
+            padding: 48px;
+            text-align: center;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: var(--shadow-gold);
+        }
+
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* Demo page */
+        .demo-example {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-top: 48px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="section container">
+            <div class="content" style="max-width:700px;">
+                <div class="hero__badge">🚪 Fake Door Generator</div>
+                <h1>สร้าง Landing Page ทดสอบ Demand</h1>
+                <p>กรอกแค่ 4 ช่อง → ได้ Fake Door Landing Page พร้อมนับคนกด</p>
+            </div>
+        </section>
+
+        <!-- Generator Form -->
+        <section class="container" style="padding-bottom:40px;">
+            <div class="generator">
+                <div class="card">
+                    <h3 style="margin-bottom:24px;font-weight:700;">📝 กรอกข้อมูล</h3>
+                    <div class="form-group">
+                        <label class="form-label">1. ชื่อ Product / Service</label>
+                        <input type="text" class="form-input" id="fdProduct" placeholder="เช่น AirPure Pro"
+                            value="AirPure Pro">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">2. Tagline <span class="form-label__hint">(1 ประโยค)</span></label>
+                        <input type="text" class="form-input" id="fdTagline"
+                            placeholder="เช่น โปรแกรม AI ตรวจจับฝุ่นแบบ Real-time"
+                            value="โปรแกรม AI ตรวจจับฝุ่น PM2.5 แบบ Real-time">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">3. ราคา</label>
+                        <input type="text" class="form-input" id="fdPrice" placeholder="เช่น 999 บาท/เดือน"
+                            value="999 บาท/เดือน">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">4. ข้อความบนปุ่ม CTA</label>
+                        <input type="text" class="form-input" id="fdCta" placeholder="เช่น Pre-order เลย!"
+                            value="สั่งซื้อเลย!">
+                    </div>
+                    <button class="btn btn--primary" style="width:100%;" id="generateBtn">🚀 Generate Landing
+                        Page</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Preview -->
+        <section class="container" style="padding-bottom:80px;">
+            <div class="preview hidden" id="previewSection">
+                <h3 class="text-center mb-4" style="font-weight:700;">👀 Preview</h3>
+                <div class="landing-preview" id="landingPreview">
+                    <div class="landing-preview__hero">
+                        <div class="landing-preview__product" id="previewProduct">AirPure Pro</div>
+                        <div class="landing-preview__tagline" id="previewTagline">โปรแกรม AI ตรวจจับฝุ่น PM2.5</div>
+                        <div class="landing-preview__price" id="previewPrice">999 บาท/เดือน</div>
+                        <button class="landing-preview__cta" id="previewCta">สั่งซื้อเลย!</button>
+                    </div>
+                    <div class="landing-preview__stats">
+                        <span>🖱️ จำนวนคนกด CTA: <strong id="clickCount">0</strong></span>
+                        <span>👀 คนเปิดดู: <strong id="viewCount">1</strong></span>
+                    </div>
+                </div>
+                <p class="text-center text-muted mt-4" style="font-size:0.85rem;">
+                    💡 ลองกดปุ่ม CTA ดูว่าจะเกิดอะไรขึ้น (Soft Landing ตามหลัก Ethics)
+                </p>
+            </div>
+        </section>
+
+        <!-- Explanation -->
+        <section class="container" style="padding-bottom:80px;">
+            <div class="content" style="max-width:700px;">
+                <div class="demo-example">
+                    <h3 style="margin-bottom:16px;">📖 Fake Door คืออะไร?</h3>
+                    <p style="color:var(--text-secondary);">Fake Door Test เป็นเทคนิคที่สร้าง Landing Page
+                        ที่ดูเหมือนสินค้า/บริการจริง แต่ยังไม่ได้สร้างจริง เพื่อวัดว่ามี Demand หรือไม่</p>
+
+                    <div class="callout callout--gold" style="margin-top:16px;">
+                        <div class="callout__title">✅ จริยธรรม (Soft Landing)</div>
+                        <div class="callout__text">
+                            • กดปุ่ม → ขึ้น "Coming Soon" ไม่ได้หลอกเก็บเงิน<br>
+                            • ขอ email/Line ไว้แจ้งเมื่อพร้อม<br>
+                            • <strong>ไม่</strong>รับเงินจริง ไม่โฆษณาเกินจริง
+                        </div>
+                    </div>
+
+                    <div class="callout callout--blue" style="margin-top:16px;">
+                        <div class="callout__title">🎯 วิธีใช้</div>
+                        <div class="callout__text">
+                            1. สร้าง Landing Page จาก Generator ด้านบน<br>
+                            2. เอาลิงก์ไปโพสต์/ส่งให้กลุ่มเป้าหมาย<br>
+                            3. นับจำนวนคนกด CTA = วัด Demand จริง<br>
+                            4. เอา Data ไปใช้ตัดสินใจว่าควรสร้างจริงไหม
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Coming Soon Modal -->
+    <div class="modal-overlay" id="comingSoonModal">
+        <div class="modal-content">
+            <div style="font-size:3rem;margin-bottom:16px;">🚧</div>
+            <h2>Coming Soon!</h2>
+            <p>สินค้านี้กำลังพัฒนาอยู่ ฝาก email/Line ไว้ เราจะแจ้งเมื่อพร้อม!</p>
+            <input type="email" class="form-input" placeholder="Email หรือ Line ID" style="margin-bottom:16px;"
+                id="modalEmail">
+            <button class="btn btn--primary" style="width:100%;" id="modalSubmit">📩 แจ้งเตือนฉัน</button>
+            <button class="btn btn--secondary mt-4" style="width:100%;" id="modalClose">ปิด</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createNav, createFooter } from '/js/components.js';
+        createNav('fakedoor');
+        createFooter();
+
+        let clickCount = 0;
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            document.getElementById('previewProduct').textContent = document.getElementById('fdProduct').value || 'Product Name';
+            document.getElementById('previewTagline').textContent = document.getElementById('fdTagline').value || 'Tagline';
+            document.getElementById('previewPrice').textContent = document.getElementById('fdPrice').value || 'ราคา';
+            document.getElementById('previewCta').textContent = document.getElementById('fdCta').value || 'Buy Now';
+            document.getElementById('previewSection').classList.remove('hidden');
+            clickCount = 0;
+            document.getElementById('clickCount').textContent = '0';
+            document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('previewCta').addEventListener('click', () => {
+            clickCount++;
+            document.getElementById('clickCount').textContent = clickCount;
+            document.getElementById('comingSoonModal').classList.add('show');
+        });
+
+        document.getElementById('modalClose').addEventListener('click', () => {
+            document.getElementById('comingSoonModal').classList.remove('show');
+        });
+
+        document.getElementById('modalSubmit').addEventListener('click', () => {
+            const email = document.getElementById('modalEmail').value;
+            if (email) {
+                document.getElementById('comingSoonModal').classList.remove('show');
+                document.getElementById('modalEmail').value = '';
+                alert('✅ บันทึกแล้ว! (Demo mode)');
+            }
+        });
+
+        document.getElementById('comingSoonModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                document.getElementById('comingSoonModal').classList.remove('show');
+            }
+        });
+    </script>
+</body>
+
+</html>

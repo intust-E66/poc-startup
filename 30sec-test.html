@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Second Test — POCKit</title>
+    <meta name="description" content="Pitch Timer + Live Voting — วัดว่าคนเข้าใจ prototype ใน 30 วินาทีไหม">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .test-container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .countdown-ring {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 6px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 32px auto;
+            transition: border-color 0.3s;
+        }
+
+        .countdown-ring.running {
+            border-color: var(--gold);
+            animation: ringPulse 1s ease-in-out infinite;
+        }
+
+        .countdown-ring.danger {
+            border-color: var(--red);
+        }
+
+        .countdown-ring.done {
+            border-color: var(--green);
+        }
+
+        @keyframes ringPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(240, 185, 11, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 30px 10px rgba(240, 185, 11, 0.15);
+            }
+        }
+
+        .countdown-number {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--gold);
+            font-feature-settings: 'tnum';
+        }
+
+        .countdown-ring.done .countdown-number {
+            color: var(--red);
+        }
+
+        .vote-section {
+            margin: 40px 0;
+        }
+
+        .vote-buttons {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .vote-btn {
+            padding: 24px 40px;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .vote-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .vote-btn--yes {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.06);
+        }
+
+        .vote-btn--no {
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        .vote-btn__emoji {
+            font-size: 2rem;
+        }
+
+        .vote-btn__label {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .vote-btn__count {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-top: 4px;
+            color: var(--gold);
+        }
+
+        .result-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .result-bar span:first-child {
+            min-width: 60px;
+        }
+
+        .result-bar__fill {
+            height: 8px;
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+
+        .result-bar--yes {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+        }
+
+        .result-bar--yes .result-bar__fill {
+            background: var(--green);
+        }
+
+        .result-bar--no {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--red);
+        }
+
+        .result-bar--no .result-bar__fill {
+            background: var(--red);
+        }
+
+        .qr-section {
+            margin: 32px auto;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            max-width: 400px;
+        }
+
+        .qr-section canvas {
+            border-radius: 12px;
+        }
+
+        .scoreboard {
+            margin: 40px 0;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .scoreboard__team {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .scoreboard__team:last-child {
+            border-bottom: none;
+        }
+
+        .scoreboard__name {
+            font-weight: 700;
+        }
+
+        .scoreboard__score {
+            display: flex;
+            gap: 16px;
+            font-size: 0.9rem;
+        }
+
+        .scoreboard__yes {
+            color: var(--green);
+        }
+
+        .scoreboard__no {
+            color: var(--red);
+        }
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="section container">
+            <div class="test-container">
+                <div class="hero__badge">🎯 30-Second Test</div>
+                <h1 style="font-size:2.5rem;font-weight:900;margin-bottom:12px;">30-Second Test</h1>
+                <p style="color:var(--text-secondary);">"ถ้าใครเห็น prototype แล้วไม่เข้าใจใน 30 วิ → ยังไม่ผ่าน"
+                </p>
+
+                <!-- Team Name Input -->
+                <div style="margin:32px 0;">
+                    <input type="text" class="form-input" id="teamName" placeholder="พิมพ์ชื่อทีม แล้วกดเริ่ม"
+                        style="text-align:center;font-size:1.1rem;font-weight:600;">
+                </div>
+
+                <!-- QR Code for audience -->
+                <div class="qr-section" id="qrSection">
+                    <h3 style="font-weight:700;margin-bottom:8px;">📱 สแกนเพื่อโหวต</h3>
+                    <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">ให้คนฟังสแกน QR
+                        นี้เพื่อเข้าหน้าโหวต</p>
+                    <div id="qrCanvas" style="display:flex;justify-content:center;"></div>
+                    <p style="color:var(--text-muted);font-size:0.8rem;margin-top:12px;" id="voteUrl"></p>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="countdown-ring" id="ring">
+                    <div class="countdown-number" id="num">30</div>
+                </div>
+
+                <div style="display:flex;gap:12px;justify-content:center;">
+                    <button class="btn btn--primary" id="btnStart">► เริ่ม 30 วินาที</button>
+                    <button class="btn btn--secondary" id="btnReset">↻ รีเซ็ต</button>
+                </div>
+
+                <!-- Voting Section -->
+                <div class="vote-section" id="voteSection">
+                    <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:8px;">โหวตเลย!</h2>
+                    <p style="color:var(--text-secondary);margin-bottom:16px;" id="voteTeamLabel">กดด อธิบายได้...</p>
+
+                    <div class="vote-buttons">
+                        <button class="vote-btn vote-btn--yes" id="btnYes">
+                            <div class="vote-btn__emoji">✅</div>
+                            <div class="vote-btn__label">เข้าใจ!</div>
+                            <div class="vote-btn__count" id="yesCount">0</div>
+                        </button>
+                        <button class="vote-btn vote-btn--no" id="btnNo">
+                            <div class="vote-btn__emoji">😵</div>
+                            <div class="vote-btn__label">ยังงง</div>
+                            <div class="vote-btn__count" id="noCount">0</div>
+                        </button>
+                    </div>
+
+                    <div class="vote-result mt-8" id="voteResult">
+                        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+                            <span>✅ เข้าใจ</span>
+                            <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
+                                <div class="result-bar__fill" id="yesBar"
+                                    style="width:0%;height:100%;background:var(--green);border-radius:4px;transition:width 0.5s;">
+                                </div>
+                            </div>
+                            <span id="yesPct">0%</span>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <span>😵 ยังงง</span>
+                            <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
+                                <div class="result-bar__fill" id="noBar"
+                                    style="width:0%;height:100%;background:var(--red);border-radius:4px;transition:width 0.5s;">
+                                </div>
+                            </div>
+                            <span id="noPct">0%</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn--outline mt-8" id="btnNewRound">🔄 รอบใหม่ (ทีมถัดไป)</button>
+                </div>
+
+                <!-- Scoreboard -->
+                <div class="scoreboard" id="scoreboard">
+                    <h3 style="font-weight:700;margin-bottom:16px;">📊 คะแนนรวมทุกทีม</h3>
+                    <div id="scoreboardBody">
+                        <p style="color:var(--text-muted);font-size:0.9rem;">ยังไม่มีทีมโหวต</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { createNav, createFooter } from '/js/components.js';
+        createNav('test30');
+        createFooter();
+
+        const VOTE_KEY = 'pockit_votes';
+
+        let seconds = 30;
+        let interval = null;
+        let yesVotes = 0;
+        let noVotes = 0;
+
+        const ring = document.getElementById('ring');
+        const num = document.getElementById('num');
+        const btnStart = document.getElementById('btnStart');
+        const btnReset = document.getElementById('btnReset');
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const btnNewRound = document.getElementById('btnNewRound');
+        const voteSection = document.getElementById('voteSection');
+
+        function updateVoteDisplay() {
+            document.getElementById('yesCount').textContent = yesVotes;
+            document.getElementById('noCount').textContent = noVotes;
+            const total = yesVotes + noVotes;
+            const yesPctVal = total ? Math.round(yesVotes / total * 100) : 0;
+            const noPctVal = total ? Math.round(noVotes / total * 100) : 0;
+            document.getElementById('yesBar').style.width = yesPctVal + '%';
+            document.getElementById('noBar').style.width = noPctVal + '%';
+            document.getElementById('yesPct').textContent = yesPctVal + '%';
+            document.getElementById('noPct').textContent = noPctVal + '%';
+        }
+
+        function getVotes() {
+            try { return JSON.parse(localStorage.getItem(VOTE_KEY) || '{}'); } catch { return {}; }
+        }
+
+        function saveTeamVotes(teamName) {
+            const votes = getVotes();
+            votes[teamName] = { yes: yesVotes, no: noVotes };
+            localStorage.setItem(VOTE_KEY, JSON.stringify(votes));
+        }
+
+        function updateScoreboard() {
+            const votes = getVotes();
+            const body = document.getElementById('scoreboardBody');
+            const teams = Object.keys(votes);
+            if (teams.length === 0) {
+                body.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">ยังไม่มีทีมโหวต</p>';
+                return;
+            }
+            body.innerHTML = teams.map(team => {
+                const v = votes[team];
+                const total = v.yes + v.no;
+                const pct = total ? Math.round(v.yes / total * 100) : 0;
+                return `<div class="scoreboard__team">
+                    <div class="scoreboard__name">${team}</div>
+                    <div class="scoreboard__score">
+                        <span class="scoreboard__yes">✅ ${v.yes}</span>
+                        <span class="scoreboard__no">😵 ${v.no}</span>
+                        <span style="color:var(--gold);font-weight:700;">${pct}%</span>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function generateQR() {
+            const baseUrl = window.location.origin + '/vote.html';
+            document.getElementById('voteUrl').textContent = baseUrl;
+            const canvas = document.getElementById('qrCanvas');
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(baseUrl)}&bgcolor=0a0e1a&color=f0b90b`;
+            canvas.innerHTML = `<img src="${qrUrl}" alt="QR Code" style="border-radius:12px;width:200px;height:200px;">`;
+        }
+
+        // Set active team for audience vote page
+        function setActiveTeam(teamName) {
+            localStorage.setItem('pockit_active_team', teamName || '');
+        }
+
+        // Poll for audience votes
+        function pollAudienceVotes() {
+            const teamName = document.getElementById('teamName').value.trim();
+            if (!teamName) return;
+            const votes = getVotes();
+            if (votes[teamName]) {
+                yesVotes = votes[teamName].yes;
+                noVotes = votes[teamName].no;
+                updateVoteDisplay();
+            }
+        }
+
+        btnStart.addEventListener('click', () => {
+            if (interval) return;
+            const teamName = document.getElementById('teamName').value.trim();
+            if (!teamName) {
+                alert('กรุณาพิมพ์ชื่อทีมก่อนกดเริ่ม');
+                document.getElementById('teamName').focus();
+                return;
+            }
+
+            seconds = 30;
+            yesVotes = 0;
+            noVotes = 0;
+            updateVoteDisplay();
+            num.textContent = seconds;
+            ring.className = 'countdown-ring running';
+
+            // Set active team for audience
+            setActiveTeam(teamName);
+
+            const playTick = () => {
+                try {
+                    const ctx = new AudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.frequency.value = seconds <= 5 ? 880 : 440;
+                    gain.gain.value = seconds <= 5 ? 0.15 : 0.05;
+                    osc.start();
+                    setTimeout(() => { osc.stop(); ctx.close(); }, 80);
+                } catch (e) { }
+            };
+
+            interval = setInterval(() => {
+                seconds--;
+                num.textContent = seconds;
+                if (seconds <= 5) ring.className = 'countdown-ring danger';
+                playTick();
+
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    interval = null;
+                    ring.className = 'countdown-ring done';
+                    num.textContent = '⏰';
+
+                    // Play done sound
+                    try {
+                        const ctx = new AudioContext();
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.frequency.value = 660;
+                        gain.gain.value = 0.2;
+                        osc.start();
+                        setTimeout(() => { osc.stop(); ctx.close(); }, 500);
+                    } catch (e) { }
+
+                    document.getElementById('voteTeamLabel').textContent = `${teamName} อธิบายได้...`;
+                }
+            }, 1000);
+        });
+
+        btnReset.addEventListener('click', () => {
+            clearInterval(interval);
+            interval = null;
+            seconds = 30;
+            num.textContent = '30';
+            ring.className = 'countdown-ring';
+            setActiveTeam('');
+        });
+
+        btnYes.addEventListener('click', () => {
+            yesVotes++;
+            updateVoteDisplay();
+            const teamName = document.getElementById('teamName').value.trim();
+            if (teamName) saveTeamVotes(teamName);
+            updateScoreboard();
+        });
+
+        btnNo.addEventListener('click', () => {
+            noVotes++;
+            updateVoteDisplay();
+            const teamName = document.getElementById('teamName').value.trim();
+            if (teamName) saveTeamVotes(teamName);
+            updateScoreboard();
+        });
+
+        btnNewRound.addEventListener('click', () => {
+            // Save current team votes
+            const teamName = document.getElementById('teamName').value.trim();
+            if (teamName) saveTeamVotes(teamName);
+
+            // Reset for new round
+            clearInterval(interval);
+            interval = null;
+            seconds = 30;
+            num.textContent = '30';
+            ring.className = 'countdown-ring';
+            yesVotes = 0;
+            noVotes = 0;
+            updateVoteDisplay();
+            setActiveTeam('');
+            document.getElementById('teamName').value = '';
+            document.getElementById('teamName').focus();
+            updateScoreboard();
+        });
+
+        // Generate QR on load
+        generateQR();
+        updateScoreboard();
+
+        // Poll for audience votes every 2 seconds
+        setInterval(() => {
+            pollAudienceVotes();
+            updateScoreboard();
+        }, 2000);
+    </script>
+</body>
+
+</html>
