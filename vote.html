@@ -126,20 +126,12 @@
 <body>
     <main class="main">
         <section class="section container">
-            <!-- Waiting state (when no team is active) -->
-            <div class="vote-page" id="waitingState">
-                <div class="vote-waiting">
-                    <div class="vote-waiting__emoji">⏳</div>
-                    <h2 style="font-weight:800;margin-bottom:8px;">รอทีมถัดไป...</h2>
-                    <p style="color:var(--text-secondary);">พี่อินทัธจะเปิดให้โหวตเมื่อทีมนำเสนอเสร็จ</p>
-                    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:16px;">หน้านี้จะอัปเดตอัตโนมัติ</p>
-                </div>
-            </div>
-
-            <!-- Voting state -->
-            <div class="vote-page hidden" id="votingState">
+            <!-- Voting state (Always visible) -->
+            <div class="vote-page" id="votingState">
                 <div class="hero__badge">🎯 30-Second Test</div>
-                <div class="vote-team-name" id="voteTeamDisplay">Team Alpha</div>
+                <input type="text" class="form-input vote-team-name" id="voteTeamInput"
+                    placeholder="พิมพ์ชื่อทีมเพื่อโหวต..."
+                    style="text-align:center; background:rgba(255,255,255,0.02); border:1px dashed var(--gold); border-radius:var(--radius-md); margin:16px auto; display:block; width:100%; max-width:300px; padding:12px; font-size:1.5rem;">
                 <div class="vote-question">ทีมนี้อธิบาย prototype ได้รู้เรื่องไหม?</div>
 
                 <div class="vote-buttons" id="voteButtons">
@@ -177,6 +169,8 @@
         const VOTE_KEY = 'pockit_votes';
         const VOTED_KEY = 'pockit_voted_teams';
 
+        const teamInput = document.getElementById('voteTeamInput');
+
         function getVotes() {
             try { return JSON.parse(localStorage.getItem(VOTE_KEY) || '{}'); } catch { return {}; }
         }
@@ -189,8 +183,10 @@
 
             // Track which teams this device voted for
             const voted = getVotedTeams();
-            voted.push(team);
-            localStorage.setItem(VOTED_KEY, JSON.stringify(voted));
+            if (!voted.includes(team)) {
+                voted.push(team);
+                localStorage.setItem(VOTED_KEY, JSON.stringify(voted));
+            }
         }
 
         function getVotedTeams() {
@@ -201,48 +197,45 @@
             return getVotedTeams().includes(team);
         }
 
-        // Check if there's an active team to vote for
-        function checkActiveTeam() {
-            const params = new URLSearchParams(window.location.search);
-            const urlTeam = params.get('team');
-            const activeTeam = urlTeam || localStorage.getItem('pockit_active_team');
-
-            if (activeTeam && !hasVoted(activeTeam)) {
-                document.getElementById('waitingState').classList.add('hidden');
-                document.getElementById('votingState').classList.remove('hidden');
-                document.getElementById('voteTeamDisplay').textContent = activeTeam;
-                document.getElementById('voteButtons').style.display = '';
+        // Check if current input team is voted
+        function checkTeamStatus() {
+            const team = teamInput.value.trim();
+            if (!team) {
+                document.getElementById('voteButtons').style.display = 'none';
                 document.getElementById('voteSuccess').classList.remove('active');
-            } else if (activeTeam && hasVoted(activeTeam)) {
-                document.getElementById('waitingState').classList.add('hidden');
-                document.getElementById('votingState').classList.remove('hidden');
-                document.getElementById('voteTeamDisplay').textContent = activeTeam;
+                return;
+            }
+
+            if (hasVoted(team)) {
                 document.getElementById('voteButtons').style.display = 'none';
                 document.getElementById('voteSuccess').classList.add('active');
             } else {
-                document.getElementById('waitingState').classList.remove('hidden');
-                document.getElementById('votingState').classList.add('hidden');
+                document.getElementById('voteButtons').style.display = 'flex';
+                document.getElementById('voteSuccess').classList.remove('active');
             }
         }
 
+        // Init
+        const urlTeam = params.get('team');
+        const activeTeam = urlTeam || localStorage.getItem('pockit_active_team') || '';
+        teamInput.value = activeTeam;
+        checkTeamStatus();
+
+        teamInput.addEventListener('input', checkTeamStatus);
+
         // Cast vote
         window.castVote = function (vote) {
-            const team = document.getElementById('voteTeamDisplay').textContent;
+            const team = teamInput.value.trim();
+            if (!team) {
+                alert('กรุณาใส่ชื่อทีมก่อนโหวต');
+                return;
+            }
             saveVote(team, vote);
-
-            // Show success
-            document.getElementById('voteButtons').style.display = 'none';
-            document.getElementById('voteSuccess').classList.add('active');
+            checkTeamStatus();
 
             // Haptic feedback
             if (navigator.vibrate) navigator.vibrate(100);
         };
-
-        // Initial check
-        checkActiveTeam();
-
-        // Poll for updates every 2 seconds
-        setInterval(checkActiveTeam, 2000);
     </script>
 </body>
 
