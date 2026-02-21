@@ -402,7 +402,7 @@
             teams.forEach((team, i) => {
                 const statusClass = team.status === 'done' ? 'status--done' : team.status === 'working' ? 'status--working' : 'status--pending';
                 const statusLabel = team.status === 'done' ? '✅ เสร็จ' : team.status === 'working' ? '🔨 กำลังทำ' : '⏳ รอ';
-                const techniqueLabel = team.technique === 'wizard' ? '🎩 Wizard of Oz' : team.technique === 'concierge' ? '🤝 Concierge' : team.technique === 'fakedoor' ? '🚪 Fake Door' : '—';
+                const techniqueLabel = team.technique || '—';
 
                 const card = document.createElement('div');
                 card.className = 'team-card';
@@ -497,8 +497,7 @@
             document.getElementById('vQ3').textContent = team.q3 || '—';
 
             document.getElementById('vRisk').textContent = team.risk || '—';
-            const techniqueLabel = team.technique === 'wizard' ? '🎩 Wizard of Oz' : team.technique === 'concierge' ? '🤝 Concierge' : team.technique === 'fakedoor' ? '🚪 Fake Door' : '—';
-            document.getElementById('vTechnique').textContent = techniqueLabel;
+            document.getElementById('vTechnique').textContent = team.technique || '—';
             document.getElementById('vTestPlan').textContent = team.testPlan || '—';
 
             document.getElementById('vSolution').textContent = team.solution || '—';

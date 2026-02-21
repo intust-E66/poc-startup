@@ -167,61 +167,33 @@
                             <input type="text" class="form-input" id="teamNameB" placeholder="เช่น Team Alpha">
                         </div>
 
-                        <h4 style="margin:24px 0 16px;">📌 Assignment 1: ความเสี่ยงหลัก</h4>
+                        <h4 style="margin:24px 0 16px;">📌 Assignment 1: สมมุติฐานที่ต้องพิสูจน์</h4>
 
                         <div class="form-group">
-                            <label class="form-label">ความเสี่ยงเดียวที่ยิ่งใหญ่ที่สุดของ idea น้องคืออะไร?</label>
+                            <label class="form-label">สมมุติฐานที่น้องๆ รู้สึกไม่แน่ใจว่าสิ่งที่จะมีคนใช้หรือไม่
+                                คืออะไร?</label>
                             <textarea class="form-textarea" id="riskMain"
                                 placeholder="เช่น ไม่แน่ใจว่าเด็กหอจะซื้อน้ำยาซักผ้าจากตู้จริงๆ ไหม"></textarea>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">เลือกเทคนิคที่จะใช้ทดสอบ</label>
-                            <div style="display:grid;gap:12px;margin-top:8px;">
-                                <label class="card"
-                                    style="padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;">
-                                    <input type="checkbox" name="technique" value="wizard" style="margin-top:4px;">
-                                    <div>
-                                        <div style="font-weight:700;">🎩 Wizard of Oz</div>
-                                        <div style="color:var(--text-secondary);font-size:0.85rem;">ดูเหมือนอัตโนมัติ
-                                            แต่คนทำเองข้างหลัง (เช่น Santabox)</div>
-                                    </div>
-                                </label>
-                                <label class="card"
-                                    style="padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;">
-                                    <input type="checkbox" name="technique" value="concierge" style="margin-top:4px;">
-                                    <div>
-                                        <div style="font-weight:700;">🤝 Concierge</div>
-                                        <div style="color:var(--text-secondary);font-size:0.85rem;">ให้บริการแบบ 1-on-1
-                                            ด้วยคนจริง (เช่น RE-invent)</div>
-                                    </div>
-                                </label>
-                                <label class="card"
-                                    style="padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;">
-                                    <input type="checkbox" name="technique" value="fakedoor" style="margin-top:4px;">
-                                    <div>
-                                        <div style="font-weight:700;">🚪 Fake Door</div>
-                                        <div style="color:var(--text-secondary);font-size:0.85rem;">
-                                            สร้างหน้าเว็บ/ปุ่มวัด demand ก่อนสร้างจริง</div>
-                                    </div>
-                                </label>
-                            </div>
+                            <label class="form-label">วิธีที่จะใช้ทดสอบสมมุติฐาน <span class="form-label__hint">—
+                                    เขียนอธิบายว่าจะใช้วิธีไหนทดสอบ</span></label>
+                            <textarea class="form-textarea" id="techniqueText"
+                                placeholder="เช่น ใช้แบบสอบถาม, สัมภาษณ์ลูกค้าตัวจริง 5 คน, ทำเพจ Facebook แล้ววัด engagement..."></textarea>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">แผนทดสอบ 24 ชั่วโมง <span class="form-label__hint">— ถ้ามีเวลาแค่
-                                    24 ชม. จะทดสอบอะไร? ยังไง?</span></label>
+                            <label class="form-label">แผนทดสอบ 24 ชั่วโมง <span class="form-label__hint">—
+                                    ที่น้องจะไปทดสอบให้ได้ผลลัพธ์ออกมา</span></label>
                             <textarea class="form-textarea" id="testPlan"
                                 placeholder="เช่น พรุ่งนี้จะเอาแกลลอนน้ำยาไปตั้งขายใต้หอ 6 ดูว่ามีคนซื้อกี่คน..."></textarea>
                         </div>
 
-
-
                         <div class="form-group">
-                            <label class="form-label">💰 Unit Economics <span
-                                    class="form-label__hint">(เสริม)</span></label>
+                            <label class="form-label">💰 ต้นทุนในการทำคือกี่บาท?</label>
                             <input type="text" class="form-input" id="unitEcon"
-                                placeholder="ราคาขาย - ต้นทุน = กำไร/ขาดทุน ต่อ 1 ชิ้น">
+                                placeholder="เช่น 500 บาท (ค่าปริ้นแบบสอบถาม + ค่าเดินทาง)">
                         </div>
 
                         <button class="btn btn--primary"
@@ -324,9 +296,9 @@
         window.submitTemplateB = function () {
             const teamName = document.getElementById('teamNameB').value || 'ไม่ระบุชื่อทีม';
             const risk = document.getElementById('riskMain').value;
-            const techniques = [...document.querySelectorAll('input[name=technique]:checked')].map(el => el.value);
-            if (!teamName || !risk || techniques.length === 0) {
-                alert('กรุณากรอกชื่อทีม, ความเสี่ยง, และเลือกเทคนิคอย่างน้อย 1 อัน');
+            const techniqueText = document.getElementById('techniqueText').value;
+            if (!teamName || !risk || !techniqueText) {
+                alert('กรุณากรอกชื่อทีม, สมมุติฐาน, และวิธีทดสอบ');
                 return;
             }
 
@@ -336,8 +308,9 @@
             const teamData = {
                 name: teamName,
                 risk: risk,
-                technique: techniques[0], // Using the first selected technique for display
+                technique: techniqueText,
                 testPlan: document.getElementById('testPlan').value,
+                unitEcon: document.getElementById('unitEcon').value,
                 status: 'working'
             };
 
