@@ -14,6 +14,7 @@ export default defineConfig({
         workshop: resolve(__dirname, 'workshop.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
         slides: resolve(__dirname, 'slides.html'),
+        slidesfull: resolve(__dirname, 'slides-full.html'),
         vote: resolve(__dirname, 'vote.html'),
       },
     },
